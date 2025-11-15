@@ -1,0 +1,19 @@
+Research by James Forshaw / Google Project Zero
+
+https://googleprojectzero.blogspot.com/2015/08/windows-10th-symbolic-link-mitigations.html
+
+https://googleprojectzero.blogspot.com/2015/12/between-rock-and-hard-link.html
+
+https://googleprojectzero.blogspot.com/2016/02/the-definitive-guide-on-win32-to-nt.html
+
+https://googleprojectzero.blogspot.com/2017/08/windows-exploitation-tricks-arbitrary.html
+
+https://googleprojectzero.blogspot.com/2018/04/windows-exploitation-tricks-exploiting.html
+
+https://infocon.org/cons/SyScan/SyScan%202015%20Singapore/SyScan%202015%20Singapore%20presentations/SyScan15%20James%20Forshaw%20-%20Reading%20Your%20File%20Posts.pdf
+
+https://vimeo.com/133002251
+
+Vulnerabilities & other’s research
+
+https://github.com/sailay1996/awesome_windows_logical_bugs/blob/master/learning_note_bookmarks.txt
