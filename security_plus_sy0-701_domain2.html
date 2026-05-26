@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CompTIA Security+ SY0-701 — Domain 2: Threats, Vulnerabilities &amp; Mitigations</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --panel-2: #334155;
+    --accent: #f97316;
+    --accent-2: #fb923c;
+    --good: #4ade80;
+    --bad: #f87171;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #475569;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  header {
+    background: linear-gradient(135deg, #7c2d12, #1e293b);
+    padding: 30px 20px;
+    text-align: center;
+    border-bottom: 3px solid var(--accent);
+  }
+  header h1 { margin: 0 0 8px; font-size: 1.8rem; }
+  header p { margin: 0; color: var(--muted); }
+  nav.tabs {
+    display: flex;
+    justify-content: center;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    flex-wrap: wrap;
+  }
+  nav.tabs button {
+    background: transparent;
+    color: var(--text);
+    border: none;
+    padding: 14px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  nav.tabs button:hover { background: var(--panel-2); }
+  nav.tabs button.active {
+    border-bottom-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  main { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+  section.tab-content { display: none; }
+  section.tab-content.active { display: block; }
+
+  /* NOTES */
+  .note-block {
+    background: var(--panel);
+    border-left: 4px solid var(--accent);
+    padding: 20px 24px;
+    margin: 18px 0;
+    border-radius: 6px;
+  }
+  .note-block h2 {
+    margin-top: 0;
+    color: var(--accent-2);
+    font-size: 1.3rem;
+  }
+  .note-block h3 {
+    color: var(--accent);
+    margin-top: 18px;
+    font-size: 1.05rem;
+  }
+  .note-block ul { padding-left: 22px; }
+  .note-block li { margin-bottom: 6px; }
+  .pill {
+    display: inline-block;
+    background: var(--panel-2);
+    color: var(--accent-2);
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    margin-right: 6px;
+    font-weight: 600;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    background: var(--panel-2);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  th, td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    font-size: 0.92rem;
+    vertical-align: top;
+  }
+  th { background: #0f172a; color: var(--accent-2); }
+  tr:last-child td { border-bottom: none; }
+
+  /* FLASHCARDS */
+  .flashcard-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .flashcard-controls button {
+    background: var(--accent);
+    color: #0f172a;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .flashcard-controls button:hover { background: var(--accent-2); }
+  .flashcard-counter { color: var(--muted); font-weight: 600; }
+  .flashcard {
+    perspective: 1200px;
+    height: 280px;
+    margin: 0 auto;
+    max-width: 700px;
+  }
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    cursor: pointer;
+  }
+  .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.4);
+    font-size: 1.15rem;
+  }
+  .flashcard-front {
+    background: linear-gradient(135deg, #7c2d12, #b45309);
+    color: white;
+    font-weight: 600;
+  }
+  .flashcard-back {
+    background: linear-gradient(135deg, #14532d, #166534);
+    color: white;
+    transform: rotateY(180deg);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .hint {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-top: 12px;
+  }
+
+  /* MCQ */
+  .mcq {
+    background: var(--panel);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 16px 0;
+    border-left: 4px solid var(--accent);
+  }
+  .mcq-question {
+    font-weight: 600;
+    margin-bottom: 14px;
+    font-size: 1.05rem;
+  }
+  .mcq-options { list-style: none; padding: 0; margin: 0; }
+  .mcq-options li {
+    background: var(--panel-2);
+    padding: 10px 14px;
+    margin: 6px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 2px solid transparent;
+  }
+  .mcq-options li:hover { background: #475569; }
+  .mcq-options li.correct {
+    background: #14532d;
+    border-color: var(--good);
+  }
+  .mcq-options li.wrong {
+    background: #7f1d1d;
+    border-color: var(--bad);
+  }
+  .mcq-explanation {
+    margin-top: 12px;
+    padding: 12px;
+    background: #0f172a;
+    border-radius: 6px;
+    font-size: 0.92rem;
+    color: var(--muted);
+    display: none;
+    border-left: 3px solid var(--accent-2);
+  }
+  .mcq.answered .mcq-explanation { display: block; }
+  .mcq-score-bar {
+    background: var(--panel);
+    padding: 14px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+    position: sticky;
+    top: 56px;
+    z-index: 9;
+  }
+  .reset-btn {
+    background: var(--bad);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 10px;
+    font-weight: 600;
+  }
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CompTIA Security+ SY0-701</h1>
+  <p>Domain 2.0 — Threats, Vulnerabilities &amp; Mitigations (22% of exam) · Notes · 40 Flashcards · 40 MCQs</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="notes">📘 Notes</button>
+  <button class="tab-btn" data-tab="flashcards">🃏 Flashcards (40)</button>
+  <button class="tab-btn" data-tab="mcq">📝 MCQs (40)</button>
+</nav>
+
+<main>
+
+<!-- ============ NOTES ============ -->
+<section id="notes" class="tab-content active">
+
+  <div class="note-block">
+    <h2>2.1 Threat Actors and Motivations</h2>
+
+    <h3>Threat Actor Types</h3>
+    <table>
+      <tr><th>Actor</th><th>Description</th><th>Sophistication</th><th>Resources</th></tr>
+      <tr><td><b>Nation-State</b></td><td>Government-sponsored APTs (Advanced Persistent Threats) — espionage, sabotage</td><td>Very High</td><td>Very High</td></tr>
+      <tr><td><b>Unskilled Attacker</b> (Script Kiddie)</td><td>Uses pre-made tools/exploits without deep knowledge</td><td>Low</td><td>Low</td></tr>
+      <tr><td><b>Hacktivist</b></td><td>Politically/socially motivated (e.g., Anonymous)</td><td>Medium</td><td>Low–Medium</td></tr>
+      <tr><td><b>Insider Threat</b></td><td>Current/former employee, contractor, or partner with access</td><td>Varies</td><td>Internal access</td></tr>
+      <tr><td><b>Organized Crime</b></td><td>Profit-driven; ransomware gangs, fraud rings</td><td>High</td><td>High</td></tr>
+      <tr><td><b>Shadow IT</b></td><td>Internal users deploying unauthorized tech (not malicious, but risky)</td><td>Low–Medium</td><td>Internal</td></tr>
+    </table>
+
+    <h3>Actor Attributes</h3>
+    <ul>
+      <li><b>Internal vs. external</b> — insider threats already have access; external must penetrate the perimeter.</li>
+      <li><b>Resources / funding</b> — nation-states &amp; organized crime are well-funded.</li>
+      <li><b>Level of sophistication / capability</b> — APT &gt; organized crime &gt; hacktivist &gt; script kiddie.</li>
+    </ul>
+
+    <h3>Motivations</h3>
+    <ul>
+      <li><b>Data exfiltration</b> — stealing data (IP, PII, secrets).</li>
+      <li><b>Espionage</b> — intelligence gathering (corporate or state).</li>
+      <li><b>Service disruption</b> — taking down systems (often DDoS).</li>
+      <li><b>Blackmail</b> — extortion using stolen data.</li>
+      <li><b>Financial gain</b> — ransomware, fraud, theft.</li>
+      <li><b>Philosophical / political beliefs</b> — hacktivism.</li>
+      <li><b>Ethical</b> — authorized researchers/penetration testers.</li>
+      <li><b>Revenge</b> — disgruntled insiders.</li>
+      <li><b>Disruption / chaos</b> — pure destruction (some nation-states, some script kiddies).</li>
+      <li><b>War</b> — cyberwarfare during armed conflict.</li>
+    </ul>
+  </div>
+
+  <div class="note-block">
+    <h2>2.2 Threat Vectors and Attack Surfaces</h2>
+
+    <h3>Message-Based Vectors</h3>
+    <ul>
+      <li><b>Email</b> — phishing, malicious attachments, links.</li>
+      <li><b>SMS / IM</b> — smishing or malicious links via text/instant messaging.</li>
+    </ul>
+
+    <h3>Other Delivery Vectors</h3>
+    <ul>
+      <li><b>Image-based</b> — malicious payload hidden in images (e.g., steganography, exploit in image parser).</li>
+      <li><b>File-based</b> — malicious documents, executables, scripts.</li>
+      <li><b>Voice call</b> — vishing.</li>
+      <li><b>Removable device</b> — USB drops, malicious flash drives.</li>
+    </ul>
+
+    <h3>Software / System Vectors</h3>
+    <ul>
+      <li><b>Vulnerable software</b> — unpatched apps. <b>Client-based</b> needs an installed agent; <b>agentless</b> uses standard protocols (e.g., SSH, WinRM).</li>
+      <li><b>Unsupported systems</b> — past end-of-life; no patches.</li>
+      <li><b>Unsecure networks</b> — open Wi-Fi, weak WPA, exposed wired ports, vulnerable Bluetooth (e.g., BlueBorne).</li>
+      <li><b>Open service ports</b> — extra attack surface (Telnet, SMB, RDP).</li>
+      <li><b>Default credentials</b> — unchanged factory passwords on routers, IoT, databases.</li>
+    </ul>
+
+    <h3>Supply Chain Vectors</h3>
+    <ul>
+      <li><b>Managed Service Providers (MSPs)</b> — compromise of MSP can fan out to many clients.</li>
+      <li><b>Vendors / Suppliers</b> — tampered hardware or malicious software updates (e.g., SolarWinds-style).</li>
+    </ul>
+
+    <h3>Human Vectors / Social Engineering</h3>
+    <ul>
+      <li><b>Phishing</b> — fraudulent email seeking credentials/clicks.</li>
+      <li><b>Vishing</b> — voice-call phishing.</li>
+      <li><b>Smishing</b> — SMS phishing.</li>
+      <li><b>Spear phishing</b> — targeted phishing; <b>whaling</b> — targets executives.</li>
+      <li><b>Misinformation / disinformation</b> — false content used to deceive or influence.</li>
+      <li><b>Impersonation</b> — pretending to be someone else (helpdesk, exec).</li>
+      <li><b>Business Email Compromise (BEC)</b> — attacker uses (or spoofs) a legitimate exec's mailbox to authorize wire transfers/data.</li>
+      <li><b>Pretexting</b> — fabricated scenario/story to extract info.</li>
+      <li><b>Watering hole</b> — compromise a site frequented by the target group.</li>
+      <li><b>Brand impersonation</b> — fake site/email mimicking a trusted brand.</li>
+      <li><b>Typosquatting</b> — registering misspelled domains (e.g., gooogle.com).</li>
+    </ul>
+  </div>
+
+  <div class="note-block">
+    <h2>2.3 Types of Vulnerabilities</h2>
+
+    <h3>Application Vulnerabilities</h3>
+    <ul>
+      <li><b>Memory injection</b> — injecting code into a running process's memory.</li>
+      <li><b>Buffer overflow</b> — writing past allocated memory; can overwrite return addresses to execute attacker code.</li>
+      <li><b>Race conditions</b> — timing flaws between Time-of-Check (<b>TOC</b>) and Time-of-Use (<b>TOU</b>).</li>
+      <li><b>Malicious update</b> — compromised software update channel delivers malware.</li>
+    </ul>
+
+    <h3>Operating System (OS)-Based</h3>
+    <ul><li>Unpatched kernel/system services, escalation flaws, vulnerable drivers.</li></ul>
+
+    <h3>Web-Based</h3>
+    <ul>
+      <li><b>SQL Injection (SQLi)</b> — attacker inserts SQL into input to manipulate DB queries.</li>
+      <li><b>Cross-Site Scripting (XSS)</b> — attacker injects client-side scripts that run in another user's browser. (Reflected, Stored, DOM-based.)</li>
+    </ul>
+
+    <h3>Hardware</h3>
+    <ul>
+      <li><b>Firmware</b> — vulnerable BIOS/UEFI/device firmware.</li>
+      <li><b>End-of-life (EOL)</b> — manufacturer no longer issues fixes.</li>
+      <li><b>Legacy</b> — old hardware/software still in production with known weaknesses.</li>
+    </ul>
+
+    <h3>Virtualization</h3>
+    <ul>
+      <li><b>VM Escape</b> — breaking out of a guest VM into the hypervisor or other VMs.</li>
+      <li><b>Resource Reuse</b> — leftover data in memory/storage exposed to a new tenant.</li>
+    </ul>
+
+    <h3>Cloud-Specific</h3>
+    <ul><li>Misconfigured storage buckets, weak IAM, exposed APIs, shared-tenancy risks.</li></ul>
+
+    <h3>Supply Chain</h3>
+    <ul>
+      <li><b>Service provider</b> — MSP/SaaS compromise.</li>
+      <li><b>Hardware provider</b> — counterfeit or implanted components.</li>
+      <li><b>Software provider</b> — trojaned updates or libraries.</li>
+    </ul>
+
+    <h3>Cryptographic Vulnerabilities</h3>
+    <ul><li>Weak algorithms (MD5, SHA-1, DES), short keys, poor RNG, improper implementation, expired certs.</li></ul>
+
+    <h3>Misconfiguration</h3>
+    <ul><li>Default settings, open S3 buckets, weak permissions, debug endpoints, verbose error messages.</li></ul>
+
+    <h3>Mobile Device</h3>
+    <ul>
+      <li><b>Sideloading</b> — installing apps outside official app stores.</li>
+      <li><b>Jailbreaking / Rooting</b> — removing OS restrictions, bypassing security model.</li>
+    </ul>
+
+    <h3>Zero-Day</h3>
+    <p>A vulnerability unknown to the vendor — no patch exists. Highly valuable to attackers.</p>
+  </div>
+
+  <div class="note-block">
+    <h2>2.4 Indicators of Malicious Activity</h2>
+
+    <h3>Malware Attacks</h3>
+    <table>
+      <tr><th>Type</th><th>What It Does</th></tr>
+      <tr><td><b>Ransomware</b></td><td>Encrypts files / locks systems and demands payment.</td></tr>
+      <tr><td><b>Trojan</b></td><td>Disguised as legitimate software; opens backdoors.</td></tr>
+      <tr><td><b>Worm</b></td><td>Self-replicating; spreads across networks without user action.</td></tr>
+      <tr><td><b>Spyware</b></td><td>Secretly collects data on user activity.</td></tr>
+      <tr><td><b>Bloatware</b></td><td>Pre-installed unneeded software; performance/security risk.</td></tr>
+      <tr><td><b>Virus</b></td><td>Attaches to a host file; needs execution to spread.</td></tr>
+      <tr><td><b>Keylogger</b></td><td>Records keystrokes (passwords, messages).</td></tr>
+      <tr><td><b>Logic Bomb</b></td><td>Triggers malicious action on a condition (date, event).</td></tr>
+      <tr><td><b>Rootkit</b></td><td>Hides at OS/kernel level, evading detection; persistence + privilege.</td></tr>
+    </table>
+
+    <h3>Physical Attacks</h3>
+    <ul>
+      <li><b>Brute force</b> — physically forcing entry (also: brute-forcing a lock).</li>
+      <li><b>RFID cloning</b> — duplicating an RFID badge to gain access.</li>
+      <li><b>Environmental</b> — tampering with HVAC, power, fire suppression to disrupt ops.</li>
+    </ul>
+
+    <h3>Network Attacks</h3>
+    <ul>
+      <li><b>DDoS</b> — distributed denial of service; <b>amplified</b> uses small request → large response from open services (NTP, DNS); <b>reflected</b> spoofs source IP so responses go to the victim.</li>
+      <li><b>DNS attacks</b> — DNS poisoning, cache poisoning, hijacking, domain takeover.</li>
+      <li><b>Wireless</b> — rogue AP, evil twin, deauth, WPS attacks.</li>
+      <li><b>On-path</b> (formerly MitM) — attacker intercepts/modifies traffic between two parties.</li>
+      <li><b>Credential replay</b> — captured credentials/sessions resent to authenticate.</li>
+      <li><b>Malicious code</b> — payload delivered over the network (drive-by, exploit).</li>
+    </ul>
+
+    <h3>Application Attacks</h3>
+    <ul>
+      <li><b>Injection</b> — SQLi, command injection, LDAP injection.</li>
+      <li><b>Buffer overflow</b> — overwrites memory.</li>
+      <li><b>Replay</b> — capturing a request/token and resending it.</li>
+      <li><b>Privilege escalation</b> — vertical (user→admin) or horizontal (user→another user).</li>
+      <li><b>Forgery</b> — CSRF, request forgery, token forgery.</li>
+      <li><b>Directory traversal</b> — using <code>../</code> to access files outside the web root.</li>
+    </ul>
+
+    <h3>Cryptographic Attacks</h3>
+    <ul>
+      <li><b>Downgrade</b> — forcing weaker protocol (e.g., TLS 1.0 instead of 1.3).</li>
+      <li><b>Collision</b> — finding two inputs that hash to the same value.</li>
+      <li><b>Birthday</b> — probability-based collision attack (relies on the birthday paradox).</li>
+    </ul>
+
+    <h3>Password Attacks</h3>
+    <ul>
+      <li><b>Spraying</b> — trying ONE common password against MANY accounts (avoids lockout).</li>
+      <li><b>Brute force</b> — trying every possible combination on ONE account.</li>
+    </ul>
+
+    <h3>Indicators of Compromise (IoCs)</h3>
+    <ul>
+      <li><b>Account lockout</b> — repeated lockouts may indicate brute force / spraying.</li>
+      <li><b>Concurrent session usage</b> — same user logged in from two places at once.</li>
+      <li><b>Blocked content</b> — security tools blocking unusual URLs/files.</li>
+      <li><b>Impossible travel</b> — login from NY, then Tokyo 10 minutes later.</li>
+      <li><b>Resource consumption</b> — unusual CPU/RAM/network spikes.</li>
+      <li><b>Resource inaccessibility</b> — files encrypted (ransomware) or services down.</li>
+      <li><b>Out-of-cycle logging</b> — log entries at unusual times.</li>
+      <li><b>Published / documented</b> — the threat appears on threat intel feeds / CVEs.</li>
+      <li><b>Missing logs</b> — attacker cleared logs to hide tracks.</li>
+    </ul>
+  </div>
+
+  <div class="note-block">
+    <h2>2.5 Mitigation Techniques to Secure the Enterprise</h2>
+
+    <h3>Core Mitigations</h3>
+    <ul>
+      <li><b>Segmentation</b> — divide the network (VLANs, subnets, microsegmentation) to limit lateral movement.</li>
+      <li><b>Access control</b> — <b>ACLs</b> on routers/firewalls/files, fine-grained <b>permissions</b> on resources.</li>
+      <li><b>Application allow list</b> — only approved binaries can run; blocks unknown malware.</li>
+      <li><b>Isolation</b> — separating systems entirely (air-gapped, sandbox).</li>
+      <li><b>Patching</b> — timely application of vendor updates.</li>
+      <li><b>Encryption</b> — protect data at rest and in transit.</li>
+      <li><b>Monitoring</b> — SIEM, EDR, IDS/IPS, log analysis.</li>
+      <li><b>Least privilege</b> — give users / services only the access they need.</li>
+      <li><b>Configuration enforcement</b> — automated tools (GPO, Ansible, Intune) ensure baselines stay in place.</li>
+      <li><b>Decommissioning</b> — securely retire old systems; wipe storage, revoke certs/accounts.</li>
+    </ul>
+
+    <h3>Hardening Techniques</h3>
+    <ul>
+      <li><b>Encryption</b> (full-disk, BitLocker/FileVault).</li>
+      <li><b>Endpoint protection</b> — antivirus / EDR.</li>
+      <li><b>Host-based firewall</b> — controls per-host network traffic.</li>
+      <li><b>HIPS</b> (Host-based Intrusion Prevention System) — blocks suspicious behavior on the host.</li>
+      <li><b>Disable unused ports / protocols</b> — close attack surface (Telnet, SMBv1).</li>
+      <li><b>Default password changes</b> — replace factory creds on every device.</li>
+      <li><b>Removal of unnecessary software</b> — fewer apps = fewer vulnerabilities.</li>
+    </ul>
+  </div>
+
+</section>
+
+<!-- ============ FLASHCARDS ============ -->
+<section id="flashcards" class="tab-content">
+  <div class="flashcard-controls">
+    <button id="prevCard">← Previous</button>
+    <span class="flashcard-counter"><span id="cardNum">1</span> / 40</span>
+    <button id="nextCard">Next →</button>
+  </div>
+  <div class="flashcard" id="flashcard">
+    <div class="flashcard-inner">
+      <div class="flashcard-front" id="cardFront">Loading…</div>
+      <div class="flashcard-back" id="cardBack">Loading…</div>
+    </div>
+  </div>
+  <p class="hint">Click the card to flip. Use Previous / Next or arrow keys.</p>
+</section>
+
+<!-- ============ MCQ ============ -->
+<section id="mcq" class="tab-content">
+  <div class="mcq-score-bar">
+    Score: <span id="score">0</span> / <span id="answered">0</span> answered (of 40)
+    <button class="reset-btn" id="resetMcq">Reset</button>
+  </div>
+  <div id="mcqContainer"></div>
+</section>
+
+</main>
+
+<footer>
+  CompTIA Security+ SY0-701 — Domain 2 Study Pack · Aligned to official exam objectives (effective Nov 2023, current as of 2026).
+</footer>
+
+<script>
+/* ================= TAB SWITCHING ================= */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+/* ================= FLASHCARDS ================= */
+const flashcards = [
+  { q: "What is a nation-state threat actor?", a: "A government-sponsored group (often APT — Advanced Persistent Threat) with very high resources and sophistication, conducting espionage, sabotage, or cyberwarfare." },
+  { q: "What is an unskilled attacker (script kiddie)?", a: "A low-sophistication attacker who uses pre-made tools, exploits, or scripts without deep technical knowledge." },
+  { q: "What motivates a hacktivist?", a: "Philosophical or political beliefs — they attack to promote a cause or protest (e.g., Anonymous)." },
+  { q: "Define an insider threat.", a: "A current or former employee, contractor, or partner with legitimate access who misuses it — intentionally or unintentionally." },
+  { q: "What is Shadow IT?", a: "Unauthorized hardware/software/services deployed inside an org without IT or security approval — not malicious, but creates risk." },
+  { q: "Name three motivations from the SY0-701 list.", a: "Any three of: data exfiltration, espionage, service disruption, blackmail, financial gain, philosophical/political, ethical, revenge, disruption/chaos, war." },
+  { q: "What is phishing?", a: "Fraudulent email designed to trick recipients into clicking malicious links, opening attachments, or revealing credentials." },
+  { q: "Vishing vs. smishing?", a: "Vishing = voice-call phishing (phone). Smishing = SMS/text-message phishing." },
+  { q: "What is Business Email Compromise (BEC)?", a: "An attack where the criminal compromises or spoofs an executive's email account to trick employees into authorizing wire transfers or releasing data." },
+  { q: "Define a watering hole attack.", a: "Compromising a website that the target group is known to visit, infecting them when they browse it." },
+  { q: "What is typosquatting?", a: "Registering misspelled domain names similar to a legitimate site (e.g., gooogle.com) to catch typo'd traffic for phishing or malware." },
+  { q: "What is pretexting?", a: "Crafting a fabricated scenario or backstory to manipulate a victim into divulging information or performing an action." },
+  { q: "Why are default credentials a major threat vector?", a: "Many devices ship with well-known factory passwords. If unchanged, attackers can immediately gain admin access." },
+  { q: "What is a supply chain attack?", a: "Compromising a third-party vendor, MSP, hardware/software supplier, or update channel to reach the ultimate target (e.g., trojaned software updates)." },
+  { q: "What is a buffer overflow?", a: "Writing more data into a buffer than it can hold, overwriting adjacent memory — can be used to inject and execute arbitrary code." },
+  { q: "Race condition: what's TOC vs. TOU?", a: "Time-of-Check (TOC) vs. Time-of-Use (TOU) — a flaw where the system checks a condition, then acts, but the state changes between the two, allowing exploitation." },
+  { q: "Define SQL Injection (SQLi).", a: "Inserting malicious SQL into application input fields to manipulate the back-end database (read, modify, delete, or escalate)." },
+  { q: "Define Cross-Site Scripting (XSS).", a: "Injecting client-side scripts into a web page so they execute in another user's browser — used to steal cookies, sessions, or perform actions as the user." },
+  { q: "What is VM escape?", a: "An attack where malicious code in a guest VM breaks out of the virtual environment to access the hypervisor or other VMs." },
+  { q: "What is a zero-day vulnerability?", a: "A vulnerability that is unknown to the vendor and has no patch — extremely valuable to attackers and very hard to defend against." },
+  { q: "Sideloading vs. jailbreaking?", a: "Sideloading = installing apps from outside official stores. Jailbreaking/Rooting = removing OS restrictions to gain elevated privileges, bypassing the device security model." },
+  { q: "Difference between a virus and a worm?", a: "A virus needs a host file and user execution to spread. A worm self-replicates and spreads across networks autonomously, no user action required." },
+  { q: "What is a Trojan?", a: "Malware disguised as legitimate software; once executed, it performs hidden malicious actions like opening backdoors." },
+  { q: "What is a rootkit?", a: "Malware that operates at the kernel/OS level, hiding its presence and granting persistent privileged access — very hard to detect or remove." },
+  { q: "What is a logic bomb?", a: "Malicious code that triggers when a specific condition is met (a date, a missing employee record, etc.)." },
+  { q: "Amplified vs. reflected DDoS?", a: "Amplified: attacker sends a small request to a service that returns a much larger response (NTP, DNS) to a victim. Reflected: attacker spoofs the source IP so legitimate replies are sent to the victim. Many attacks combine both." },
+  { q: "What is an on-path attack?", a: "Formerly called Man-in-the-Middle — the attacker intercepts and possibly alters communications between two parties without their knowledge." },
+  { q: "What is a credential replay attack?", a: "Capturing valid credentials, tokens, or session data in transit and resending them to authenticate as the victim." },
+  { q: "Define directory traversal.", a: "Using '../' sequences in input to access files outside the intended web root (e.g., reading /etc/passwd)." },
+  { q: "Vertical vs. horizontal privilege escalation?", a: "Vertical: user gains higher privileges (user→admin). Horizontal: user accesses another user's account at the same privilege level." },
+  { q: "What is a downgrade attack?", a: "Forcing the use of a weaker, older protocol or cipher (e.g., TLS 1.0 instead of 1.3) so it can be more easily broken." },
+  { q: "Hash collision vs. birthday attack?", a: "Collision: finding any two inputs that produce the same hash. Birthday attack: a statistical method (based on the birthday paradox) that finds collisions much faster than brute force." },
+  { q: "Password spraying vs. brute force?", a: "Spraying: try ONE common password against MANY accounts (avoids lockout). Brute force: try MANY passwords against ONE account." },
+  { q: "Define 'impossible travel' as an indicator of compromise.", a: "Two logins from geographically distant locations within a time too short to physically travel — strong sign of stolen credentials." },
+  { q: "Why are missing logs an indicator of compromise?", a: "Attackers often clear or disable logs to hide their tracks — gaps in expected logging are highly suspicious." },
+  { q: "What is network segmentation and why does it help?", a: "Dividing a network into zones (VLANs, subnets, microsegments) so that an attacker who gets in cannot easily move laterally across the whole environment." },
+  { q: "What is an application allow list?", a: "A list of approved executables/applications. Anything NOT on the list is blocked from running — strong defense against malware." },
+  { q: "Define least privilege.", a: "Granting users, services, and processes only the minimum permissions necessary to do their job — reduces blast radius of any compromise." },
+  { q: "What is configuration enforcement?", a: "Using automation (GPO, MDM, Ansible, Intune) to continuously apply and re-apply secure baseline configurations, preventing drift." },
+  { q: "List four common host hardening techniques.", a: "Any four of: full-disk encryption, endpoint protection (AV/EDR), host-based firewall, HIPS, disabling unused ports/protocols, changing default passwords, and removing unnecessary software." }
+];
+
+let currentCard = 0;
+const cardFront = document.getElementById('cardFront');
+const cardBack = document.getElementById('cardBack');
+const cardNum = document.getElementById('cardNum');
+const flashcardEl = document.getElementById('flashcard');
+
+function renderCard() {
+  flashcardEl.classList.remove('flipped');
+  cardFront.textContent = flashcards[currentCard].q;
+  cardBack.textContent = flashcards[currentCard].a;
+  cardNum.textContent = currentCard + 1;
+}
+flashcardEl.addEventListener('click', () => flashcardEl.classList.toggle('flipped'));
+document.getElementById('nextCard').addEventListener('click', () => {
+  currentCard = (currentCard + 1) % flashcards.length;
+  renderCard();
+});
+document.getElementById('prevCard').addEventListener('click', () => {
+  currentCard = (currentCard - 1 + flashcards.length) % flashcards.length;
+  renderCard();
+});
+document.addEventListener('keydown', (e) => {
+  if (!document.getElementById('flashcards').classList.contains('active')) return;
+  if (e.key === 'ArrowRight') document.getElementById('nextCard').click();
+  if (e.key === 'ArrowLeft') document.getElementById('prevCard').click();
+  if (e.key === ' ') { e.preventDefault(); flashcardEl.classList.toggle('flipped'); }
+});
+renderCard();
+
+/* ================= MCQ ================= */
+const mcqs = [
+  { q: "An APT (Advanced Persistent Threat) attacks a defense contractor over many months. Which threat actor is MOST likely?",
+    options: ["Script kiddie", "Hacktivist", "Nation-state", "Shadow IT"], correct: 2,
+    exp: "APTs targeting defense contractors over long periods are characteristic of well-funded nation-state actors." },
+  { q: "An employee installs an unapproved cloud sync app to share files with a partner. This is BEST classified as:",
+    options: ["Insider threat (malicious)", "Hacktivism", "Shadow IT", "Ransomware"], correct: 2,
+    exp: "Unauthorized but not malicious deployment of tech is Shadow IT — risky because security has no visibility." },
+  { q: "A hacker group leaks government emails to expose alleged corruption. Their motivation is BEST described as:",
+    options: ["Financial gain", "Philosophical/political beliefs", "Ethical research", "Bloatware distribution"], correct: 1,
+    exp: "Hacktivism is driven by philosophical/political beliefs." },
+  { q: "An attacker calls the helpdesk pretending to be a senior executive locked out of email. Which technique is in use?",
+    options: ["Smishing", "Pretexting (impersonation)", "Watering hole", "DDoS"], correct: 1,
+    exp: "Crafting a fake story/identity to manipulate someone is pretexting, often combined with impersonation." },
+  { q: "A finance employee receives a wire-transfer request from the CEO's email and the request is urgent. This MOST likely describes:",
+    options: ["BEC", "Brute force", "Watering hole", "Logic bomb"], correct: 0,
+    exp: "Business Email Compromise (BEC) typically impersonates an executive to authorize fraudulent wire transfers." },
+  { q: "An attacker registers 'amaz0n.com' to capture mistyped traffic. This is:",
+    options: ["Brand impersonation only", "Typosquatting", "Watering hole", "Vishing"], correct: 1,
+    exp: "Typosquatting registers misspelled/lookalike domains to capture typo'd traffic for phishing or malware." },
+  { q: "An attacker compromises a popular industry forum visited daily by engineers at a target company. This is:",
+    options: ["Phishing", "Watering hole attack", "On-path attack", "DNS poisoning"], correct: 1,
+    exp: "Compromising a site frequented by the target group to infect them is a watering hole attack." },
+  { q: "An IoT camera ships with admin/admin login. The factory password should be considered a:",
+    options: ["Configuration enforcement issue only", "Threat vector — default credentials", "Cryptographic flaw", "Memory injection"], correct: 1,
+    exp: "Default credentials are a well-known attack vector exploited by botnets like Mirai." },
+  { q: "An MSP that manages 200 customers is breached, allowing the attacker to push malicious updates to all of them. This is a:",
+    options: ["Phishing campaign", "Supply chain attack", "Privilege escalation", "Replay attack"], correct: 1,
+    exp: "Compromising an MSP/vendor to reach downstream clients is a supply chain attack." },
+  { q: "Which BEST describes a buffer overflow?",
+    options: [
+      "Encrypting more data than the cipher allows",
+      "Writing more data into a buffer than it can hold, potentially overwriting adjacent memory",
+      "Sending too many emails at once",
+      "Using deprecated TLS"
+    ], correct: 1,
+    exp: "Buffer overflow corrupts adjacent memory, potentially allowing arbitrary code execution." },
+  { q: "An app checks file permissions, then opens the file. Between the two operations the attacker swaps the file. This is a:",
+    options: ["Buffer overflow", "Race condition (TOCTOU)", "Privilege escalation only", "DDoS"], correct: 1,
+    exp: "Time-of-Check / Time-of-Use is a classic race condition." },
+  { q: "Which BEST describes XSS?",
+    options: [
+      "Injecting SQL into a database query",
+      "Injecting client-side scripts that run in another user's browser",
+      "Overflowing memory in a web server",
+      "Cracking passwords"
+    ], correct: 1,
+    exp: "Cross-Site Scripting injects scripts that execute in victims' browsers — used to steal cookies/sessions or impersonate." },
+  { q: "An attacker breaks out of a guest VM and accesses the hypervisor. This is:",
+    options: ["VM escape", "Resource reuse", "Container drift", "Privilege drop"], correct: 0,
+    exp: "VM escape compromises the boundary between guest and host/hypervisor." },
+  { q: "A manufacturer no longer issues patches for a switch model still in production. This vulnerability category is:",
+    options: ["Zero-day", "End-of-life / legacy", "Race condition", "Misconfiguration"], correct: 1,
+    exp: "EOL hardware/software no longer receives vendor security updates." },
+  { q: "A vulnerability is being actively exploited and the vendor has no patch yet. This is a:",
+    options: ["Known CVE with patch", "Misconfiguration", "Zero-day", "Bloatware"], correct: 2,
+    exp: "Zero-day = unknown to vendor / no patch available." },
+  { q: "Which is an example of a cryptographic vulnerability?",
+    options: [
+      "Using AES-256 with a TPM",
+      "Using MD5 to hash passwords",
+      "Salting passwords",
+      "Enforcing TLS 1.3"
+    ], correct: 1,
+    exp: "MD5 is broken (collisions trivial) — a clear cryptographic weakness." },
+  { q: "Files on a server get encrypted, and a note demands $200,000 in cryptocurrency. This is:",
+    options: ["Spyware", "Ransomware", "Bloatware", "Worm"], correct: 1,
+    exp: "Encrypting data and demanding payment is the textbook definition of ransomware." },
+  { q: "Malware spreads automatically across the network without user interaction. This is a:",
+    options: ["Virus", "Trojan", "Worm", "Logic bomb"], correct: 2,
+    exp: "Worms self-replicate and spread autonomously across networks." },
+  { q: "Software hides at kernel level and persistently grants admin access while evading AV. This is a:",
+    options: ["Trojan", "Rootkit", "Spyware", "Bloatware"], correct: 1,
+    exp: "A rootkit hides at the OS/kernel level for persistence and stealth." },
+  { q: "Code triggers a payload exactly on the day a former employee was fired. This is a:",
+    options: ["Worm", "Logic bomb", "Trojan", "Adware"], correct: 1,
+    exp: "A logic bomb fires when a specific condition is met — often a date or event." },
+  { q: "Attackers spoof source IPs and exploit open NTP servers to flood a victim with massive responses. This is:",
+    options: ["DNS poisoning", "On-path attack", "Amplified/reflected DDoS", "Replay attack"], correct: 2,
+    exp: "Amplification (small request → large response) + reflection (spoofed source IP) is a classic DDoS combo." },
+  { q: "An attacker positions between a user and their bank to read traffic. This is BEST called:",
+    options: ["On-path attack", "DDoS", "Phishing", "Logic bomb"], correct: 0,
+    exp: "Intercepting communications between two parties is an on-path (formerly MitM) attack." },
+  { q: "Which attack inserts '../../etc/passwd' into a URL parameter?",
+    options: ["SQL injection", "Directory traversal", "XSS", "Privilege escalation"], correct: 1,
+    exp: "Directory traversal uses ../ to escape the intended directory and read sensitive files." },
+  { q: "A user gains access to ANOTHER user's account at the same level. This is:",
+    options: ["Vertical privilege escalation", "Horizontal privilege escalation", "Replay", "Forgery"], correct: 1,
+    exp: "Horizontal escalation = sideways movement to peer accounts. Vertical = gaining higher privilege." },
+  { q: "An attacker captures and resends a session token. This is:",
+    options: ["Brute force", "Replay attack", "Spraying", "Forgery"], correct: 1,
+    exp: "Resending captured authentication data is a replay attack." },
+  { q: "An attacker forces a server to negotiate TLS 1.0 instead of TLS 1.3. This is a:",
+    options: ["Replay attack", "Downgrade attack", "Birthday attack", "DNS attack"], correct: 1,
+    exp: "Forcing weaker protocol negotiation = downgrade attack." },
+  { q: "Which password attack tries 'Summer2025!' against thousands of accounts to avoid lockout?",
+    options: ["Brute force", "Dictionary against single account", "Password spraying", "Rainbow table"], correct: 2,
+    exp: "Spraying = one common password vs many accounts; avoids lockout thresholds." },
+  { q: "A user logs in from New York at 09:00 and from Singapore at 09:15. This indicator is BEST described as:",
+    options: ["Out-of-cycle logging", "Concurrent session usage / impossible travel", "Resource consumption", "Missing logs"], correct: 1,
+    exp: "Two distant logins within an impossible travel time strongly suggest credential compromise." },
+  { q: "After an incident, the security team finds the audit log file is suddenly empty. This is a sign of:",
+    options: ["Healthy operations", "Missing logs — likely tampering by an attacker", "Patch management", "Configuration drift"], correct: 1,
+    exp: "Attackers commonly clear logs to hide activity — missing logs are a strong IoC." },
+  { q: "A workstation suddenly has 100% CPU and disk I/O at 3 AM. This is which type of indicator?",
+    options: ["Resource consumption / out-of-cycle activity", "Brute force only", "Bloatware", "Vishing"], correct: 0,
+    exp: "Unusual resource usage at unusual times is a classic IoC suggesting malware or unauthorized activity." },
+  { q: "An organization separates IT, OT, and guest networks into distinct VLANs. This mitigation is:",
+    options: ["Segmentation", "Encryption", "Allow listing", "Decommissioning"], correct: 0,
+    exp: "Network segmentation limits lateral movement by separating zones." },
+  { q: "Only pre-approved executables can run on a workstation; everything else is blocked. This is:",
+    options: ["Application allow list", "Antivirus signatures", "DLP", "Patching"], correct: 0,
+    exp: "Allow listing (whitelisting) blocks anything not explicitly approved." },
+  { q: "Granting users only the access required for their role is the principle of:",
+    options: ["Defense in depth", "Least privilege", "Zero Trust", "Need-to-know only"], correct: 1,
+    exp: "Least privilege = minimum necessary access. (Need-to-know is related but specifically about data.)" },
+  { q: "Using GPOs and Intune to continuously enforce a security baseline is:",
+    options: ["Configuration enforcement", "Hardening", "Decommissioning", "Patching"], correct: 0,
+    exp: "Configuration enforcement re-applies the secure baseline automatically to prevent drift." },
+  { q: "Securely retiring a server and wiping its drives is:",
+    options: ["Patching", "Decommissioning", "Segmentation", "Isolation"], correct: 1,
+    exp: "Decommissioning includes wiping data, revoking credentials/certs, and removing the asset from inventory." },
+  { q: "Which is a host hardening step?",
+    options: ["Buying a new switch", "Disabling unused ports and protocols", "Increasing internet bandwidth", "Adding more users"], correct: 1,
+    exp: "Disabling unused services/ports reduces attack surface — core hardening practice." },
+  { q: "Which is the BEST definition of a HIPS?",
+    options: [
+      "A network firewall at the perimeter",
+      "A host-based IPS that monitors and blocks suspicious activity on a single endpoint",
+      "An IDS that only detects",
+      "A SIEM correlation rule"
+    ], correct: 1,
+    exp: "Host-based Intrusion Prevention System runs on the endpoint and actively blocks malicious behavior." },
+  { q: "A user installs an APK from a website instead of the Play Store. This is:",
+    options: ["Jailbreaking", "Sideloading", "Rooting", "Patching"], correct: 1,
+    exp: "Sideloading bypasses official app stores — can introduce malicious apps." },
+  { q: "Which finding is MOST likely a misconfiguration vulnerability?",
+    options: [
+      "An expired TLS 1.3 certificate",
+      "A public S3 bucket containing customer PII",
+      "A zero-day in a kernel module",
+      "A buffer overflow in a parser"
+    ], correct: 1,
+    exp: "An exposed public bucket with sensitive data is a classic misconfiguration vulnerability." },
+  { q: "An attacker clones an employee's RFID badge and walks through the door. This is BEST classified as:",
+    options: ["Brute force network attack", "RFID cloning (physical attack)", "On-path attack", "Phishing"], correct: 1,
+    exp: "RFID cloning duplicates the badge's wireless credential to gain physical access." }
+];
+
+let score = 0, answered = 0;
+const mcqContainer = document.getElementById('mcqContainer');
+const scoreEl = document.getElementById('score');
+const answeredEl = document.getElementById('answered');
+
+function renderMcqs() {
+  mcqContainer.innerHTML = '';
+  score = 0; answered = 0;
+  scoreEl.textContent = score;
+  answeredEl.textContent = answered;
+  mcqs.forEach((m, idx) => {
+    const div = document.createElement('div');
+    div.className = 'mcq';
+    div.dataset.idx = idx;
+    let html = `<div class="mcq-question">${idx + 1}. ${m.q}</div><ul class="mcq-options">`;
+    m.options.forEach((opt, i) => {
+      html += `<li data-i="${i}">${String.fromCharCode(65 + i)}. ${opt}</li>`;
+    });
+    html += `</ul><div class="mcq-explanation"><b>Explanation:</b> ${m.exp}</div>`;
+    div.innerHTML = html;
+    mcqContainer.appendChild(div);
+
+    div.querySelectorAll('.mcq-options li').forEach(li => {
+      li.addEventListener('click', () => {
+        if (div.classList.contains('answered')) return;
+        const chosen = parseInt(li.dataset.i, 10);
+        const correctIdx = m.correct;
+        div.querySelectorAll('.mcq-options li').forEach((node, i) => {
+          if (i === correctIdx) node.classList.add('correct');
+          else if (i === chosen) node.classList.add('wrong');
+        });
+        if (chosen === correctIdx) score++;
+        answered++;
+        scoreEl.textContent = score;
+        answeredEl.textContent = answered;
+        div.classList.add('answered');
+      });
+    });
+  });
+}
+document.getElementById('resetMcq').addEventListener('click', renderMcqs);
+renderMcqs();
+</script>
+</body>
+</html>
