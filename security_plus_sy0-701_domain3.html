@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CompTIA Security+ SY0-701 — Domain 3: Security Architecture</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --panel-2: #334155;
+    --accent: #10b981;
+    --accent-2: #34d399;
+    --good: #4ade80;
+    --bad: #f87171;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #475569;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  header {
+    background: linear-gradient(135deg, #064e3b, #1e293b);
+    padding: 30px 20px;
+    text-align: center;
+    border-bottom: 3px solid var(--accent);
+  }
+  header h1 { margin: 0 0 8px; font-size: 1.8rem; }
+  header p { margin: 0; color: var(--muted); }
+  nav.tabs {
+    display: flex;
+    justify-content: center;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    flex-wrap: wrap;
+  }
+  nav.tabs button {
+    background: transparent;
+    color: var(--text);
+    border: none;
+    padding: 14px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  nav.tabs button:hover { background: var(--panel-2); }
+  nav.tabs button.active {
+    border-bottom-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  main { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+  section.tab-content { display: none; }
+  section.tab-content.active { display: block; }
+
+  .note-block {
+    background: var(--panel);
+    border-left: 4px solid var(--accent);
+    padding: 20px 24px;
+    margin: 18px 0;
+    border-radius: 6px;
+  }
+  .note-block h2 { margin-top: 0; color: var(--accent-2); font-size: 1.3rem; }
+  .note-block h3 { color: var(--accent); margin-top: 18px; font-size: 1.05rem; }
+  .note-block ul { padding-left: 22px; }
+  .note-block li { margin-bottom: 6px; }
+  .pill {
+    display: inline-block;
+    background: var(--panel-2);
+    color: var(--accent-2);
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    margin-right: 6px;
+    font-weight: 600;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    background: var(--panel-2);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  th, td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    font-size: 0.92rem;
+    vertical-align: top;
+  }
+  th { background: #0f172a; color: var(--accent-2); }
+  tr:last-child td { border-bottom: none; }
+
+  .flashcard-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .flashcard-controls button {
+    background: var(--accent);
+    color: #0f172a;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .flashcard-controls button:hover { background: var(--accent-2); }
+  .flashcard-counter { color: var(--muted); font-weight: 600; }
+  .flashcard {
+    perspective: 1200px;
+    height: 280px;
+    margin: 0 auto;
+    max-width: 700px;
+  }
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    cursor: pointer;
+  }
+  .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.4);
+    font-size: 1.15rem;
+  }
+  .flashcard-front {
+    background: linear-gradient(135deg, #064e3b, #047857);
+    color: white;
+    font-weight: 600;
+  }
+  .flashcard-back {
+    background: linear-gradient(135deg, #14532d, #166534);
+    color: white;
+    transform: rotateY(180deg);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .hint { text-align: center; color: var(--muted); font-size: 0.85rem; margin-top: 12px; }
+
+  .mcq {
+    background: var(--panel);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 16px 0;
+    border-left: 4px solid var(--accent);
+  }
+  .mcq-question { font-weight: 600; margin-bottom: 14px; font-size: 1.05rem; }
+  .mcq-options { list-style: none; padding: 0; margin: 0; }
+  .mcq-options li {
+    background: var(--panel-2);
+    padding: 10px 14px;
+    margin: 6px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 2px solid transparent;
+  }
+  .mcq-options li:hover { background: #475569; }
+  .mcq-options li.correct { background: #14532d; border-color: var(--good); }
+  .mcq-options li.wrong { background: #7f1d1d; border-color: var(--bad); }
+  .mcq-explanation {
+    margin-top: 12px;
+    padding: 12px;
+    background: #0f172a;
+    border-radius: 6px;
+    font-size: 0.92rem;
+    color: var(--muted);
+    display: none;
+    border-left: 3px solid var(--accent-2);
+  }
+  .mcq.answered .mcq-explanation { display: block; }
+  .mcq-score-bar {
+    background: var(--panel);
+    padding: 14px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+    position: sticky;
+    top: 56px;
+    z-index: 9;
+  }
+  .reset-btn {
+    background: var(--bad);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 10px;
+    font-weight: 600;
+  }
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CompTIA Security+ SY0-701</h1>
+  <p>Domain 3.0 — Security Architecture (18% of exam) · Notes · 40 Flashcards · 40 MCQs</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="notes">📘 Notes</button>
+  <button class="tab-btn" data-tab="flashcards">🃏 Flashcards (40)</button>
+  <button class="tab-btn" data-tab="mcq">📝 MCQs (40)</button>
+</nav>
+
+<main>
+
+<section id="notes" class="tab-content active">
+
+  <div class="note-block">
+    <h2>3.1 Architecture Models &amp; Their Security Implications</h2>
+
+    <h3>Cloud</h3>
+    <ul>
+      <li><b>Responsibility Matrix</b> — divides security responsibility between provider and customer:
+        <table>
+          <tr><th>Layer</th><th>IaaS</th><th>PaaS</th><th>SaaS</th></tr>
+          <tr><td>Data &amp; Access</td><td>Customer</td><td>Customer</td><td>Customer</td></tr>
+          <tr><td>App / Runtime</td><td>Customer</td><td>Provider</td><td>Provider</td></tr>
+          <tr><td>OS / Hypervisor</td><td>Provider</td><td>Provider</td><td>Provider</td></tr>
+          <tr><td>Hardware</td><td>Provider</td><td>Provider</td><td>Provider</td></tr>
+        </table>
+      </li>
+      <li><b>Hybrid</b> — mix of on-prem + cloud; complex identity, networking, and data flow.</li>
+      <li><b>Third-party vendors</b> — SaaS, MSPs — evaluate via due diligence, contracts, audits (SOC 2).</li>
+    </ul>
+
+    <h3>Other Architecture Concepts</h3>
+    <ul>
+      <li><b>Infrastructure as Code (IaC)</b> — managing infra with code (Terraform, CloudFormation). Versioned, testable, repeatable; risk = secrets in code, drift.</li>
+      <li><b>Serverless</b> — code runs in functions (Lambda); no server management. Reduces patching burden but introduces opaque event-driven attack surface.</li>
+      <li><b>Microservices</b> — many small services communicating via APIs. Better isolation but more network-exposed APIs to defend.</li>
+    </ul>
+
+    <h3>Network Infrastructure</h3>
+    <ul>
+      <li><b>Physical isolation</b> — separate equipment/cabling. <b>Air-gapped</b>: no network connection at all (used for OT / classified).</li>
+      <li><b>Logical segmentation</b> — VLANs, subnets, firewall zones.</li>
+      <li><b>SDN (Software-Defined Networking)</b> — separates control plane from data plane; dynamic, programmatic network configuration.</li>
+    </ul>
+
+    <h3>Other Models</h3>
+    <ul>
+      <li><b>On-premises</b> — full control + full responsibility; high CapEx.</li>
+      <li><b>Centralized vs. Decentralized</b> — central is easier to secure/manage; decentralized is more resilient but harder to govern.</li>
+      <li><b>Containerization</b> (Docker, Kubernetes) — lightweight, share host kernel; faster than VMs but weaker isolation.</li>
+      <li><b>Virtualization</b> — hypervisor isolates VMs; stronger boundary, more overhead than containers.</li>
+      <li><b>IoT</b> — limited compute, often unpatched; segregate on dedicated network.</li>
+      <li><b>ICS / SCADA</b> — industrial control; legacy protocols (Modbus), uptime over patching, physical-world consequences.</li>
+      <li><b>RTOS (Real-Time OS)</b> — deterministic timing; often in embedded medical/defense/automotive.</li>
+      <li><b>Embedded systems</b> — purpose-built devices; difficult to patch.</li>
+      <li><b>High Availability (HA)</b> — designed to keep services running during failures.</li>
+    </ul>
+
+    <h3>Architecture Considerations</h3>
+    <p>When selecting an architecture, evaluate: <b>Availability, Resilience, Cost, Responsiveness, Scalability, Ease of deployment, Risk transference</b> (e.g., to a cloud provider), <b>Ease of recovery, Patch availability, Inability to patch</b> (legacy/OT), <b>Power, Compute</b>.</p>
+  </div>
+
+  <div class="note-block">
+    <h2>3.2 Securing Enterprise Infrastructure</h2>
+
+    <h3>Infrastructure Considerations</h3>
+    <ul>
+      <li><b>Device placement</b> — where in the topology a security tool sits (perimeter vs. internal).</li>
+      <li><b>Security zones</b> — DMZ, internal, restricted; firewalls between zones.</li>
+      <li><b>Attack surface</b> — sum of all exposure points; minimize by hardening, disabling services.</li>
+      <li><b>Connectivity</b> — wired/wireless, VPN, dedicated lines.</li>
+      <li><b>Failure modes</b>:
+        <ul>
+          <li><b>Fail-open</b> — on failure the device passes traffic (availability over security).</li>
+          <li><b>Fail-closed</b> — on failure the device blocks traffic (security over availability).</li>
+        </ul>
+      </li>
+      <li><b>Device attributes</b>:
+        <ul>
+          <li><b>Active vs. Passive</b> — active blocks (IPS); passive only observes (IDS).</li>
+          <li><b>Inline vs. Tap/Monitor</b> — inline is in the data path; tap/monitor receives a copy via SPAN port.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>Network Appliances</h3>
+    <table>
+      <tr><th>Appliance</th><th>Role</th></tr>
+      <tr><td><b>Jump Server</b></td><td>Hardened bastion host used to reach restricted zones; admins SSH/RDP through it.</td></tr>
+      <tr><td><b>Proxy Server</b></td><td>Forwards requests on behalf of clients; can filter/log/cache. Forward proxy = client-side; reverse proxy = server-side.</td></tr>
+      <tr><td><b>IDS</b></td><td>Detects intrusions and alerts (passive).</td></tr>
+      <tr><td><b>IPS</b></td><td>Detects AND blocks intrusions (active, inline).</td></tr>
+      <tr><td><b>Load Balancer</b></td><td>Distributes traffic across servers — improves availability + scalability.</td></tr>
+      <tr><td><b>Sensors</b></td><td>Collect telemetry (network/host) for SIEM/IDS.</td></tr>
+    </table>
+
+    <h3>Port Security</h3>
+    <ul>
+      <li><b>802.1X</b> — port-based network access control. Supplicant → Authenticator (switch/AP) → Authentication Server (RADIUS).</li>
+      <li><b>EAP</b> — extensible authentication protocol used over 802.1X (EAP-TLS, PEAP, EAP-TTLS, EAP-FAST).</li>
+    </ul>
+
+    <h3>Firewall Types</h3>
+    <ul>
+      <li><b>Layer 4 firewall</b> — stateful packet filter (IP, port, protocol).</li>
+      <li><b>Layer 7 firewall</b> — application-aware (deep packet inspection, app identification).</li>
+      <li><b>NGFW (Next-Generation Firewall)</b> — Layer 4–7 + IPS, app-ID, user-ID, decryption.</li>
+      <li><b>WAF (Web Application Firewall)</b> — protects web apps from SQLi, XSS, etc.</li>
+      <li><b>UTM (Unified Threat Management)</b> — single appliance combining firewall, IPS, AV, content filter, VPN, etc.</li>
+    </ul>
+
+    <h3>Secure Communication / Access</h3>
+    <ul>
+      <li><b>VPN</b> — encrypted tunnel over an untrusted network; site-to-site or remote-access.</li>
+      <li><b>Tunneling — TLS</b> — common for SSL/TLS VPNs (clientless via browser, or full client).</li>
+      <li><b>Tunneling — IPsec</b> — operates at Layer 3; <b>AH</b> (integrity), <b>ESP</b> (encryption + integrity); <b>Transport</b> (payload only) vs. <b>Tunnel</b> (whole packet); uses IKE for key exchange.</li>
+      <li><b>SD-WAN</b> — software-defined WAN; intelligently routes traffic across multiple links (MPLS, broadband, LTE) for cost/performance.</li>
+      <li><b>SASE (Secure Access Service Edge)</b> — converges SD-WAN + cloud-delivered security (SWG, CASB, ZTNA, FWaaS) into one service.</li>
+    </ul>
+
+    <h3>Selection of Effective Controls</h3>
+    <p>Pick controls based on threat model, regulatory requirements, cost, and operational impact. Defense-in-depth = layered controls so no single failure breaches everything.</p>
+  </div>
+
+  <div class="note-block">
+    <h2>3.3 Data Protection Concepts &amp; Strategies</h2>
+
+    <h3>Data Types</h3>
+    <ul>
+      <li><b>Regulated</b> — covered by laws (PII, PHI, PCI).</li>
+      <li><b>Trade secret</b> — confidential business info (formula, process).</li>
+      <li><b>Intellectual Property (IP)</b> — copyrights, patents, trademarks.</li>
+      <li><b>Legal</b> — contracts, litigation hold materials.</li>
+      <li><b>Financial</b> — bank, accounting, payroll data.</li>
+      <li><b>Human-readable</b> — text, documents people can read directly.</li>
+      <li><b>Non-human-readable</b> — binary, encrypted, machine code.</li>
+    </ul>
+
+    <h3>Data Classifications</h3>
+    <table>
+      <tr><th>Level</th><th>Description</th></tr>
+      <tr><td><b>Public</b></td><td>No harm if disclosed (marketing material).</td></tr>
+      <tr><td><b>Private</b></td><td>Internal use; minor harm if leaked.</td></tr>
+      <tr><td><b>Sensitive</b></td><td>Loss could harm individuals/business.</td></tr>
+      <tr><td><b>Confidential</b></td><td>Restricted to specific groups; serious damage if exposed.</td></tr>
+      <tr><td><b>Restricted</b></td><td>Highly limited access; significant harm if disclosed.</td></tr>
+      <tr><td><b>Critical</b></td><td>Highest impact level; loss is catastrophic.</td></tr>
+    </table>
+
+    <h3>Data States</h3>
+    <ul>
+      <li><b>Data at rest</b> — stored (disk, DB, backup tape). Protect with encryption (BitLocker, TDE).</li>
+      <li><b>Data in transit (in motion)</b> — moving on a network. Protect with TLS, IPsec, SSH, VPN.</li>
+      <li><b>Data in use</b> — being processed in memory. Hardest to protect; use enclaves (SGX), homomorphic encryption, confidential computing.</li>
+    </ul>
+
+    <h3>Sovereignty &amp; Geolocation</h3>
+    <ul>
+      <li><b>Data sovereignty</b> — data is subject to the laws of the country where it's stored.</li>
+      <li><b>Geolocation</b> — knowing where data physically resides; often required by GDPR / regional laws.</li>
+    </ul>
+
+    <h3>Methods to Secure Data</h3>
+    <ul>
+      <li><b>Geographic restrictions</b> — block storage/access in certain regions (geofencing).</li>
+      <li><b>Encryption</b> — protects at rest and in transit.</li>
+      <li><b>Hashing</b> — integrity check; one-way.</li>
+      <li><b>Masking</b> — partial obscuring (XXXX-1234) for display.</li>
+      <li><b>Tokenization</b> — replace with non-sensitive token (PCI-friendly).</li>
+      <li><b>Obfuscation</b> — make data harder to read (steg, code obf).</li>
+      <li><b>Segmentation</b> — separate sensitive data into isolated networks/databases.</li>
+      <li><b>Permission restrictions</b> — RBAC/ABAC, NTFS ACLs, S3 policies.</li>
+    </ul>
+  </div>
+
+  <div class="note-block">
+    <h2>3.4 Resilience &amp; Recovery in Security Architecture</h2>
+
+    <h3>High Availability (HA)</h3>
+    <ul>
+      <li><b>Load balancing</b> — distributes traffic across multiple active servers (active/active).</li>
+      <li><b>Clustering</b> — multiple servers act as a single logical unit; can be active/active or active/passive (failover).</li>
+    </ul>
+
+    <h3>Site Considerations (DR)</h3>
+    <table>
+      <tr><th>Site</th><th>Equipment</th><th>Data</th><th>Recovery time</th><th>Cost</th></tr>
+      <tr><td><b>Hot</b></td><td>Fully equipped</td><td>Live/replicated</td><td>Minutes–hours</td><td>Highest</td></tr>
+      <tr><td><b>Warm</b></td><td>Equipped, partial data</td><td>Periodic sync</td><td>Hours–days</td><td>Medium</td></tr>
+      <tr><td><b>Cold</b></td><td>Empty space + power/connectivity</td><td>None until restored</td><td>Days–weeks</td><td>Lowest</td></tr>
+    </table>
+    <ul>
+      <li><b>Geographic dispersion</b> — distribute sites across regions to survive disasters affecting an entire area.</li>
+    </ul>
+
+    <h3>Diversity &amp; Cloud</h3>
+    <ul>
+      <li><b>Platform diversity</b> — using different vendors/OSes so a single vuln doesn't take everything down.</li>
+      <li><b>Multi-cloud</b> — using AWS + Azure + GCP for resilience and to avoid lock-in.</li>
+      <li><b>Continuity of operations (COOP)</b> — keeping critical functions running through disruptions; covered in BCP.</li>
+    </ul>
+
+    <h3>Capacity Planning</h3>
+    <ul>
+      <li><b>People</b> — staffing levels, on-call rotation, cross-training.</li>
+      <li><b>Technology</b> — software licenses, automation capacity.</li>
+      <li><b>Infrastructure</b> — compute, storage, network, power, cooling.</li>
+    </ul>
+
+    <h3>Testing</h3>
+    <ul>
+      <li><b>Tabletop exercise</b> — discussion-based walkthrough of a scenario.</li>
+      <li><b>Failover test</b> — actually switch to backup systems to verify they work.</li>
+      <li><b>Simulation</b> — execute responses in a controlled mock incident.</li>
+      <li><b>Parallel processing</b> — run primary and backup at the same time to compare outputs.</li>
+    </ul>
+
+    <h3>Backups</h3>
+    <ul>
+      <li><b>Onsite vs. offsite</b> — onsite is fast; offsite survives site disasters. Best practice = both (3-2-1 rule: 3 copies, 2 media types, 1 offsite).</li>
+      <li><b>Frequency</b> — driven by RPO (Recovery Point Objective).</li>
+      <li><b>Encryption</b> — backups are a high-value target; always encrypt.</li>
+      <li><b>Snapshots</b> — point-in-time copy (often VM/disk-level); fast restore.</li>
+      <li><b>Recovery</b> — verify restores actually work — untested backups are not backups.</li>
+      <li><b>Replication</b> — continuous copying to another location (sync = real-time, async = delayed).</li>
+      <li><b>Journaling</b> — log of every change so the system can replay/roll back transactions (DBs, file systems).</li>
+    </ul>
+
+    <h3>Power</h3>
+    <ul>
+      <li><b>UPS (Uninterruptible Power Supply)</b> — battery providing short-term ride-through during outages and clean transition to generator.</li>
+      <li><b>Generator</b> — long-term backup power (diesel/natural gas) for extended outages.</li>
+    </ul>
+  </div>
+
+</section>
+
+<section id="flashcards" class="tab-content">
+  <div class="flashcard-controls">
+    <button id="prevCard">← Previous</button>
+    <span class="flashcard-counter"><span id="cardNum">1</span> / 40</span>
+    <button id="nextCard">Next →</button>
+  </div>
+  <div class="flashcard" id="flashcard">
+    <div class="flashcard-inner">
+      <div class="flashcard-front" id="cardFront">Loading…</div>
+      <div class="flashcard-back" id="cardBack">Loading…</div>
+    </div>
+  </div>
+  <p class="hint">Click the card to flip. Use Previous / Next or arrow keys.</p>
+</section>
+
+<section id="mcq" class="tab-content">
+  <div class="mcq-score-bar">
+    Score: <span id="score">0</span> / <span id="answered">0</span> answered (of 40)
+    <button class="reset-btn" id="resetMcq">Reset</button>
+  </div>
+  <div id="mcqContainer"></div>
+</section>
+
+</main>
+
+<footer>
+  CompTIA Security+ SY0-701 — Domain 3 Study Pack · Aligned to official exam objectives (effective Nov 2023, current as of 2026).
+</footer>
+
+<script>
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+const flashcards = [
+  { q: "What is the cloud responsibility matrix?", a: "A model that defines which security responsibilities belong to the cloud provider vs. the customer. Customer always owns data and access; provider's share grows from IaaS to PaaS to SaaS." },
+  { q: "Define Infrastructure as Code (IaC).", a: "Managing infrastructure via machine-readable code (Terraform, CloudFormation, Ansible) - versioned, repeatable, testable. Risk: secrets in code, configuration drift." },
+  { q: "What is serverless computing?", a: "An execution model where cloud functions (e.g., AWS Lambda) run on demand without managing servers - provider handles scaling and OS patching." },
+  { q: "Containerization vs. virtualization?", a: "Containers share the host OS kernel - lightweight, fast, but weaker isolation. VMs each run a full OS on a hypervisor - stronger isolation, more overhead." },
+  { q: "What is an air-gapped network?", a: "A network that is physically isolated from any other network - no wired or wireless connection. Used for highly sensitive systems (classified, OT/ICS)." },
+  { q: "What is SDN (Software-Defined Networking)?", a: "Network architecture that separates the control plane from the data plane, enabling centralized, programmatic configuration of network behavior." },
+  { q: "What are ICS / SCADA systems and a key security concern?", a: "Industrial control systems used in manufacturing, utilities, and infrastructure. Concern: legacy protocols, uptime priority, and inability to patch - physical-world consequences." },
+  { q: "Define microservices architecture.", a: "An app built from many small, independently deployable services that communicate via APIs. Improves isolation but increases the API attack surface." },
+  { q: "What is an RTOS?", a: "Real-Time Operating System - provides deterministic, time-critical responses; used in embedded medical, automotive, and defense systems." },
+  { q: "Fail-open vs. fail-closed?", a: "Fail-open: when the device fails, traffic is allowed (favors availability). Fail-closed: when the device fails, traffic is blocked (favors security)." },
+  { q: "Active vs. passive device?", a: "Active devices (IPS) inspect and BLOCK traffic inline. Passive devices (IDS) only observe and ALERT - they don't stop traffic." },
+  { q: "Inline vs. tap/monitor placement?", a: "Inline = device sits in the data path; failure can affect traffic flow. Tap/monitor = device receives a mirrored copy (SPAN port); cannot block but doesn't impact flow." },
+  { q: "What is a jump server?", a: "A hardened, monitored bastion host used as a single controlled entry point into a restricted network zone. Admins connect to it first, then to internal targets." },
+  { q: "Forward vs. reverse proxy?", a: "Forward proxy: sits in front of internal CLIENTS, controlling outbound traffic. Reverse proxy: sits in front of internal SERVERS, accepting incoming requests on their behalf." },
+  { q: "IDS vs. IPS?", a: "IDS detects and alerts on intrusions (passive). IPS detects AND blocks them (active, inline). Both rely on signatures, anomaly, or behavior analysis." },
+  { q: "What does a load balancer do for security?", a: "Distributes traffic across multiple backend servers to provide availability/scalability - and can offload TLS, hide server IPs, and absorb partial DDoS." },
+  { q: "What is 802.1X?", a: "A port-based network access control standard. The supplicant (device) authenticates through the authenticator (switch/AP) to a RADIUS server before being allowed onto the network." },
+  { q: "What is EAP and name two variants?", a: "Extensible Authentication Protocol - a framework used over 802.1X. Variants include EAP-TLS, PEAP, EAP-TTLS, EAP-FAST." },
+  { q: "Layer 4 vs. Layer 7 firewall?", a: "Layer 4 = stateful filtering by IP/port/protocol. Layer 7 = application-aware deep packet inspection that can identify apps, users, and block specific actions." },
+  { q: "What is a NGFW?", a: "Next-Generation Firewall - combines stateful firewalling with IPS, application identification, user identification, TLS decryption, and threat intel." },
+  { q: "What is a WAF?", a: "Web Application Firewall - sits in front of web apps and filters HTTP(S) traffic to block attacks like SQLi, XSS, and CSRF." },
+  { q: "What is UTM?", a: "Unified Threat Management - a single appliance that bundles multiple security functions (firewall, IPS, AV, content filtering, VPN) for SMB use." },
+  { q: "TLS VPN vs. IPsec VPN?", a: "TLS VPN: works at the application/transport layer; often clientless (browser). IPsec VPN: works at Layer 3, typically requires a client; supports site-to-site and remote access with strong encryption (ESP)." },
+  { q: "IPsec: AH vs. ESP?", a: "AH (Authentication Header): integrity + authentication, no encryption. ESP (Encapsulating Security Payload): encryption + integrity. ESP is the most commonly used." },
+  { q: "Tunnel mode vs. transport mode IPsec?", a: "Tunnel mode encrypts the ENTIRE original packet (used for site-to-site VPNs). Transport mode encrypts only the payload (host-to-host)." },
+  { q: "What is SD-WAN?", a: "Software-Defined Wide Area Network - intelligently routes traffic across multiple links (MPLS, broadband, LTE) based on policy, performance, and cost." },
+  { q: "What is SASE?", a: "Secure Access Service Edge - converges SD-WAN with cloud-delivered security services (SWG, CASB, ZTNA, FWaaS) into a single, identity-driven service." },
+  { q: "Name the three data states.", a: "Data at rest (stored), data in transit (moving on a network), and data in use (being processed in memory)." },
+  { q: "What is data sovereignty?", a: "The principle that data is subject to the laws and regulations of the country where it is physically stored." },
+  { q: "Tokenization vs. masking - for protecting data?", a: "Tokenization replaces sensitive data with a reversible non-sensitive token (used for PCI). Masking partially hides data for display (XXXX-1234) and is typically irreversible by viewers." },
+  { q: "Public vs. confidential vs. restricted classification?", a: "Public: free to share. Confidential: limited to specific groups; serious damage if leaked. Restricted: highly limited access; significant harm if disclosed." },
+  { q: "Load balancing vs. clustering?", a: "Load balancing distributes traffic across multiple ACTIVE servers. Clustering groups servers to act as one logical unit; can be active/active or active/passive (failover)." },
+  { q: "Hot vs. warm vs. cold site?", a: "Hot: fully equipped, live data, fastest recovery, highest cost. Warm: equipped with periodic data sync, hours-days recovery. Cold: empty space with utilities, slowest recovery, cheapest." },
+  { q: "What is platform diversity and why does it help?", a: "Using different vendors/OSes/clouds so a single vulnerability or outage doesn't compromise everything - increases resilience." },
+  { q: "What is a tabletop exercise?", a: "A discussion-based DR/IR test where stakeholders walk through a scenario verbally - identifies gaps without disrupting systems." },
+  { q: "What is a parallel processing test?", a: "Running primary and backup systems at the same time to compare outputs - verifies the backup works without taking the primary offline." },
+  { q: "State the 3-2-1 backup rule.", a: "Maintain 3 copies of data, on 2 different media types, with 1 copy stored offsite." },
+  { q: "Snapshot vs. replication?", a: "Snapshot: point-in-time copy of data/state, often used for quick rollback. Replication: continuous copying to another location (sync = real-time, async = delayed)." },
+  { q: "What is journaling in backup contexts?", a: "Recording every transaction or change in a log so the system can roll forward (replay) or roll back operations - common in databases and file systems." },
+  { q: "UPS vs. generator?", a: "UPS (Uninterruptible Power Supply): battery-based short-term power for clean transition during brief outages. Generator: long-term backup power (diesel/natural gas) for extended outages." }
+];
+
+let currentCard = 0;
+const cardFront = document.getElementById('cardFront');
+const cardBack = document.getElementById('cardBack');
+const cardNum = document.getElementById('cardNum');
+const flashcardEl = document.getElementById('flashcard');
+
+function renderCard() {
+  flashcardEl.classList.remove('flipped');
+  cardFront.textContent = flashcards[currentCard].q;
+  cardBack.textContent = flashcards[currentCard].a;
+  cardNum.textContent = currentCard + 1;
+}
+flashcardEl.addEventListener('click', () => flashcardEl.classList.toggle('flipped'));
+document.getElementById('nextCard').addEventListener('click', () => {
+  currentCard = (currentCard + 1) % flashcards.length;
+  renderCard();
+});
+document.getElementById('prevCard').addEventListener('click', () => {
+  currentCard = (currentCard - 1 + flashcards.length) % flashcards.length;
+  renderCard();
+});
+document.addEventListener('keydown', (e) => {
+  if (!document.getElementById('flashcards').classList.contains('active')) return;
+  if (e.key === 'ArrowRight') document.getElementById('nextCard').click();
+  if (e.key === 'ArrowLeft') document.getElementById('prevCard').click();
+  if (e.key === ' ') { e.preventDefault(); flashcardEl.classList.toggle('flipped'); }
+});
+renderCard();
+
+const mcqs = [
+  { q: "In a SaaS deployment, who is responsible for protecting customer DATA in the application?",
+    options: ["Cloud provider only", "Customer", "Neither - it's automatic", "ISP"], correct: 1,
+    exp: "In every cloud model (IaaS/PaaS/SaaS), the customer is always responsible for their data and access management." },
+  { q: "An organization uses Terraform to define and deploy its cloud infrastructure. This is BEST described as:",
+    options: ["Serverless computing", "Infrastructure as Code (IaC)", "Microservices", "SD-WAN"], correct: 1,
+    exp: "IaC manages infrastructure through version-controlled code (Terraform, CloudFormation, etc.)." },
+  { q: "Which architecture has the WEAKEST workload isolation?",
+    options: ["Air-gapped physical hosts", "Type 1 hypervisor VMs", "Containers sharing a host kernel", "Separate data centers"], correct: 2,
+    exp: "Containers share the host OS kernel - a kernel exploit can affect all containers on that host." },
+  { q: "An OT engineer must connect to a sensitive SCADA network. Which approach gives the STRONGEST isolation?",
+    options: ["VLAN segmentation", "Reverse proxy", "Air-gapped network", "Allow listing"], correct: 2,
+    exp: "Air-gapping physically isolates the network with no electronic connection - strongest isolation." },
+  { q: "An IPS is placed in the path of all internet traffic and actively blocks attacks. This is BEST described as:",
+    options: ["Passive, tap-mode", "Active, inline", "Active, tap-mode", "Passive, inline"], correct: 1,
+    exp: "An IPS that blocks live traffic must be active and inline (in the data path)." },
+  { q: "An organization wants to monitor traffic without affecting throughput in case the device fails. Which design is BEST?",
+    options: ["Inline IPS in fail-closed mode", "Inline NGFW in fail-open mode", "IDS on a SPAN/tap port", "WAF in active mode"], correct: 2,
+    exp: "IDS on a tap/SPAN port observes a copy of traffic - failure of the IDS does not affect the production data path." },
+  { q: "A firewall is configured to BLOCK all traffic if it crashes. This is:",
+    options: ["Fail-open", "Fail-closed", "Stateless", "Default-allow"], correct: 1,
+    exp: "Fail-closed prioritizes security: blocks traffic when the device fails." },
+  { q: "Admins must reach servers in a restricted production VLAN. They first SSH into a hardened, logged host before reaching the targets. This is a:",
+    options: ["Reverse proxy", "Jump server (bastion)", "WAF", "Load balancer"], correct: 1,
+    exp: "A jump/bastion host is a single hardened entry point into a restricted zone." },
+  { q: "Which BEST describes a reverse proxy?",
+    options: [
+      "Forwards outbound traffic from internal clients",
+      "Sits in front of internal servers, accepting client requests on their behalf",
+      "Encrypts disks at rest",
+      "Distributes admin sessions"
+    ], correct: 1,
+    exp: "A reverse proxy fronts servers - clients connect to it; it forwards to backend servers, often adding TLS, caching, or filtering." },
+  { q: "Which device is BEST for protecting a public web application from SQL injection and XSS?",
+    options: ["Layer 4 firewall", "WAF", "Load balancer", "Network IDS"], correct: 1,
+    exp: "WAFs inspect HTTP(S) and block app-layer attacks like SQLi and XSS." },
+  { q: "A small business wants firewall, IPS, AV, and VPN in ONE appliance. Which fits BEST?",
+    options: ["NGFW only", "WAF", "UTM", "Reverse proxy"], correct: 2,
+    exp: "Unified Threat Management (UTM) bundles multiple security functions in one appliance - common for SMBs." },
+  { q: "Which authentication framework allows a wireless client to use a digital certificate via 802.1X?",
+    options: ["WPA-PSK", "EAP-TLS", "WEP", "TKIP"], correct: 1,
+    exp: "EAP-TLS uses certificates on both client and server for mutual authentication via 802.1X." },
+  { q: "A company connects two offices over the internet with an encrypted Layer 3 tunnel. This is MOST likely:",
+    options: ["Site-to-site IPsec VPN", "Reverse proxy", "WAF", "SD-WAN only"], correct: 0,
+    exp: "Site-to-site IPsec creates an encrypted Layer-3 tunnel between two locations." },
+  { q: "In IPsec, which provides BOTH encryption and integrity?",
+    options: ["AH", "ESP", "IKEv1 only", "TLS"], correct: 1,
+    exp: "ESP provides confidentiality (encryption) plus integrity. AH provides integrity but no encryption." },
+  { q: "Which BEST describes SASE?",
+    options: [
+      "A firewall hardware appliance",
+      "A converged cloud service combining SD-WAN with security (SWG, CASB, ZTNA, FWaaS)",
+      "A type of backup solution",
+      "A failover database technology"
+    ], correct: 1,
+    exp: "SASE merges SD-WAN networking with cloud-delivered security as a unified service." },
+  { q: "An organization wants to optimize WAN traffic across MPLS and broadband based on performance. They should deploy:",
+    options: ["IPsec VPN", "SD-WAN", "DMZ", "Active/active load balancer"], correct: 1,
+    exp: "SD-WAN dynamically selects the best path among multiple WAN links based on policy and conditions." },
+  { q: "Which is an example of data IN USE?",
+    options: [
+      "A database stored on disk",
+      "An email being sent over TLS",
+      "Personal data being processed in RAM by an application",
+      "A backup tape in a vault"
+    ], correct: 2,
+    exp: "Data being actively processed in memory is data in use - protected via enclaves, confidential computing, etc." },
+  { q: "Sensitive customer data is encrypted on disk using BitLocker. This protects data:",
+    options: ["At rest", "In transit", "In use", "All three"], correct: 0,
+    exp: "Disk encryption protects data at rest." },
+  { q: "An EU customer's data must remain stored in EU data centers. This is driven BEST by:",
+    options: ["High availability", "Data sovereignty / geolocation", "Tokenization", "Snapshot policy"], correct: 1,
+    exp: "Sovereignty and geolocation requirements (e.g., GDPR) dictate where data is physically stored." },
+  { q: "Which technique replaces credit card numbers with a non-sensitive value via a vault lookup?",
+    options: ["Hashing", "Tokenization", "Compression", "Steganography"], correct: 1,
+    exp: "Tokenization is widely used in PCI environments to remove sensitive PANs from systems." },
+  { q: "Which classification typically applies to PUBLIC marketing material?",
+    options: ["Critical", "Public", "Confidential", "Restricted"], correct: 1,
+    exp: "Public data has no impact if disclosed - appropriate for marketing material." },
+  { q: "Two web servers behind a load balancer share traffic equally. This describes:",
+    options: ["Active/passive failover", "Active/active load balancing", "Cold site", "Geographic dispersion"], correct: 1,
+    exp: "Active/active = both servers handle traffic simultaneously, distributed by the LB." },
+  { q: "Which DR site type can be online in MINUTES with the most current data?",
+    options: ["Cold", "Warm", "Hot", "Modular"], correct: 2,
+    exp: "Hot sites are fully equipped with replicated live data - fastest, most expensive recovery." },
+  { q: "Which DR site is essentially an empty room with power and connectivity, no equipment?",
+    options: ["Hot", "Warm", "Cold", "Mirror"], correct: 2,
+    exp: "Cold sites provide just space/utilities; equipment and data must be brought in - cheapest, slowest recovery." },
+  { q: "Spreading systems across two regions hundreds of miles apart provides:",
+    options: ["Platform diversity", "Geographic dispersion", "Containerization", "Snapshot retention"], correct: 1,
+    exp: "Geographic dispersion ensures regional disasters don't take everything down." },
+  { q: "An organization runs production on AWS and DR on Azure. This is BEST described as:",
+    options: ["Single-cloud HA", "Multi-cloud diversity", "On-prem failover", "SASE"], correct: 1,
+    exp: "Multi-cloud uses multiple providers for resilience and to avoid lock-in." },
+  { q: "Which test is a discussion-based scenario walkthrough WITHOUT touching production systems?",
+    options: ["Failover test", "Tabletop exercise", "Parallel processing", "Full interruption"], correct: 1,
+    exp: "Tabletop exercises walk through a scenario verbally with stakeholders - minimal operational risk." },
+  { q: "Which test runs primary and backup systems SIMULTANEOUSLY to compare results?",
+    options: ["Failover", "Parallel processing", "Simulation", "Tabletop"], correct: 1,
+    exp: "Parallel processing validates the backup operates correctly without disrupting production." },
+  { q: "Backups are written to disk locally AND replicated to cloud nightly. The cloud copy is encrypted. This BEST aligns with:",
+    options: ["3-2-1 backup rule", "Air-gapping", "RPO of zero", "Tabletop testing"], correct: 0,
+    exp: "Two media types + one offsite copy aligns with the 3-2-1 backup principle." },
+  { q: "Which provides a quick point-in-time copy of a VM that allows fast rollback?",
+    options: ["Snapshot", "Tape archive", "Journaling", "Cold site"], correct: 0,
+    exp: "Snapshots capture state at a moment in time and enable fast restore." },
+  { q: "Continuous, near-real-time copying of data from primary to a secondary site is:",
+    options: ["Replication", "Cold storage", "Tabletop test", "WAF caching"], correct: 0,
+    exp: "Replication continuously synchronizes data - synchronous (real-time) or asynchronous (delayed)." },
+  { q: "A short-term battery system provides power during a brief outage and bridges to a generator. This is a:",
+    options: ["UPS", "PDU", "ATS", "Flywheel only"], correct: 0,
+    exp: "An Uninterruptible Power Supply (UPS) provides ride-through battery power and clean transition." },
+  { q: "Which device type runs purpose-built code and typically has limited or no patching capability?",
+    options: ["Workstation", "Embedded system", "Server", "Hypervisor"], correct: 1,
+    exp: "Embedded systems are purpose-built and often hard or impossible to patch - a core SY0-701 consideration." },
+  { q: "An ICS network must remain online 24/7 and patches require shutdowns. The BEST approach is:",
+    options: [
+      "Apply all patches immediately during business hours",
+      "Segment and isolate the ICS, schedule controlled patch windows, and use compensating controls",
+      "Disable monitoring to reduce risk",
+      "Move all controls to public cloud"
+    ], correct: 1,
+    exp: "ICS environments rely on segmentation, controlled patch windows, and compensating controls due to availability constraints." },
+  { q: "Which is a Layer 7 firewall capability NOT in a basic Layer 4 firewall?",
+    options: ["Allow/deny by IP", "Allow/deny by port", "Block by application identity (e.g., block Dropbox)", "NAT"], correct: 2,
+    exp: "Layer 7 (application) inspection identifies applications regardless of port - Layer 4 cannot." },
+  { q: "Which method does NOT secure data - but only verifies its integrity?",
+    options: ["Encryption", "Hashing", "Tokenization", "Masking"], correct: 1,
+    exp: "Hashing is one-way and used for integrity, not confidentiality." },
+  { q: "Capacity planning for resilience MUST include which three areas?",
+    options: [
+      "Encryption, hashing, masking",
+      "People, technology, infrastructure",
+      "Servers, switches, routers",
+      "Backup, restore, audit"
+    ], correct: 1,
+    exp: "SY0-701 specifies capacity planning across people, technology, and infrastructure." },
+  { q: "Which BEST describes an attack-surface reduction strategy?",
+    options: [
+      "Add more user accounts",
+      "Disable unused services and close unnecessary ports",
+      "Allow all outbound traffic",
+      "Run more services per host"
+    ], correct: 1,
+    exp: "Reducing the attack surface = fewer running services and exposed ports = less to exploit." },
+  { q: "An organization wants to be able to authenticate USERS connecting via wired ethernet to a switch. The standard is:",
+    options: ["802.11", "802.1X", "PoE", "STP"], correct: 1,
+    exp: "802.1X is the IEEE standard for port-based network access control on wired and wireless." },
+  { q: "Which BEST justifies using BOTH a UPS and a generator?",
+    options: [
+      "UPS handles long outages; generator handles short ones",
+      "UPS bridges short outages and powers a clean transition while the generator starts and runs through long outages",
+      "They cannot be used together",
+      "Generators do not produce clean power, UPS replaces them"
+    ], correct: 1,
+    exp: "UPS = short-term clean power; generator = long-term sustained power. Used together for full coverage." }
+];
+
+let score = 0, answered = 0;
+const mcqContainer = document.getElementById('mcqContainer');
+const scoreEl = document.getElementById('score');
+const answeredEl = document.getElementById('answered');
+
+function renderMcqs() {
+  mcqContainer.innerHTML = '';
+  score = 0; answered = 0;
+  scoreEl.textContent = score;
+  answeredEl.textContent = answered;
+  mcqs.forEach((m, idx) => {
+    const div = document.createElement('div');
+    div.className = 'mcq';
+    div.dataset.idx = idx;
+    let html = `<div class="mcq-question">${idx + 1}. ${m.q}</div><ul class="mcq-options">`;
+    m.options.forEach((opt, i) => {
+      html += `<li data-i="${i}">${String.fromCharCode(65 + i)}. ${opt}</li>`;
+    });
+    html += `</ul><div class="mcq-explanation"><b>Explanation:</b> ${m.exp}</div>`;
+    div.innerHTML = html;
+    mcqContainer.appendChild(div);
+
+    div.querySelectorAll('.mcq-options li').forEach(li => {
+      li.addEventListener('click', () => {
+        if (div.classList.contains('answered')) return;
+        const chosen = parseInt(li.dataset.i, 10);
+        const correctIdx = m.correct;
+        div.querySelectorAll('.mcq-options li').forEach((node, i) => {
+          if (i === correctIdx) node.classList.add('correct');
+          else if (i === chosen) node.classList.add('wrong');
+        });
+        if (chosen === correctIdx) score++;
+        answered++;
+        scoreEl.textContent = score;
+        answeredEl.textContent = answered;
+        div.classList.add('answered');
+      });
+    });
+  });
+}
+document.getElementById('resetMcq').addEventListener('click', renderMcqs);
+renderMcqs();
+</script>
+</body>
+</html>
