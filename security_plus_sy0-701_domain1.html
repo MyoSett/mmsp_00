@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CompTIA Security+ SY0-701 — Domain 1: General Security Concepts</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --panel-2: #334155;
+    --accent: #38bdf8;
+    --accent-2: #22d3ee;
+    --good: #4ade80;
+    --bad: #f87171;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #475569;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  header {
+    background: linear-gradient(135deg, #0c4a6e, #1e293b);
+    padding: 30px 20px;
+    text-align: center;
+    border-bottom: 3px solid var(--accent);
+  }
+  header h1 { margin: 0 0 8px; font-size: 1.8rem; }
+  header p { margin: 0; color: var(--muted); }
+  nav.tabs {
+    display: flex;
+    justify-content: center;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    flex-wrap: wrap;
+  }
+  nav.tabs button {
+    background: transparent;
+    color: var(--text);
+    border: none;
+    padding: 14px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  nav.tabs button:hover { background: var(--panel-2); }
+  nav.tabs button.active {
+    border-bottom-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  main { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+  section.tab-content { display: none; }
+  section.tab-content.active { display: block; }
+
+  /* NOTES */
+  .note-block {
+    background: var(--panel);
+    border-left: 4px solid var(--accent);
+    padding: 20px 24px;
+    margin: 18px 0;
+    border-radius: 6px;
+  }
+  .note-block h2 {
+    margin-top: 0;
+    color: var(--accent-2);
+    font-size: 1.3rem;
+  }
+  .note-block h3 {
+    color: var(--accent);
+    margin-top: 18px;
+    font-size: 1.05rem;
+  }
+  .note-block ul { padding-left: 22px; }
+  .note-block li { margin-bottom: 6px; }
+  .pill {
+    display: inline-block;
+    background: var(--panel-2);
+    color: var(--accent-2);
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    margin-right: 6px;
+    font-weight: 600;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    background: var(--panel-2);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  th, td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    font-size: 0.92rem;
+  }
+  th { background: #0f172a; color: var(--accent-2); }
+  tr:last-child td { border-bottom: none; }
+
+  /* FLASHCARDS */
+  .flashcard-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .flashcard-controls button {
+    background: var(--accent);
+    color: #0f172a;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .flashcard-controls button:hover { background: var(--accent-2); }
+  .flashcard-counter { color: var(--muted); font-weight: 600; }
+  .flashcard {
+    perspective: 1200px;
+    height: 280px;
+    margin: 0 auto;
+    max-width: 700px;
+  }
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    cursor: pointer;
+  }
+  .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.4);
+    font-size: 1.15rem;
+  }
+  .flashcard-front {
+    background: linear-gradient(135deg, #0c4a6e, #1e40af);
+    color: white;
+    font-weight: 600;
+  }
+  .flashcard-back {
+    background: linear-gradient(135deg, #14532d, #166534);
+    color: white;
+    transform: rotateY(180deg);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .hint {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-top: 12px;
+  }
+
+  /* MCQ */
+  .mcq {
+    background: var(--panel);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 16px 0;
+    border-left: 4px solid var(--accent);
+  }
+  .mcq-question {
+    font-weight: 600;
+    margin-bottom: 14px;
+    font-size: 1.05rem;
+  }
+  .mcq-options { list-style: none; padding: 0; margin: 0; }
+  .mcq-options li {
+    background: var(--panel-2);
+    padding: 10px 14px;
+    margin: 6px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 2px solid transparent;
+  }
+  .mcq-options li:hover { background: #475569; }
+  .mcq-options li.correct {
+    background: #14532d;
+    border-color: var(--good);
+  }
+  .mcq-options li.wrong {
+    background: #7f1d1d;
+    border-color: var(--bad);
+  }
+  .mcq-explanation {
+    margin-top: 12px;
+    padding: 12px;
+    background: #0f172a;
+    border-radius: 6px;
+    font-size: 0.92rem;
+    color: var(--muted);
+    display: none;
+    border-left: 3px solid var(--accent-2);
+  }
+  .mcq.answered .mcq-explanation { display: block; }
+  .mcq-score-bar {
+    background: var(--panel);
+    padding: 14px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+    position: sticky;
+    top: 56px;
+    z-index: 9;
+  }
+  .reset-btn {
+    background: var(--bad);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 10px;
+    font-weight: 600;
+  }
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CompTIA Security+ SY0-701</h1>
+  <p>Domain 1.0 — General Security Concepts (12% of exam) · Notes · 40 Flashcards · 40 MCQs</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="notes">📘 Notes</button>
+  <button class="tab-btn" data-tab="flashcards">🃏 Flashcards (40)</button>
+  <button class="tab-btn" data-tab="mcq">📝 MCQs (40)</button>
+</nav>
+
+<main>
+
+<!-- ============ NOTES ============ -->
+<section id="notes" class="tab-content active">
+
+  <div class="note-block">
+    <h2>1.1 Compare and contrast various types of security controls</h2>
+
+    <h3>Categories of Controls (WHO/HOW it's implemented)</h3>
+    <ul>
+      <li><span class="pill">Technical</span> Implemented through technology (firewalls, IDS, encryption, antivirus, ACLs).</li>
+      <li><span class="pill">Managerial</span> Administrative — policies, risk assessments, security planning, training programs.</li>
+      <li><span class="pill">Operational</span> Day-to-day procedures done by people (awareness training, incident response, backups, user provisioning).</li>
+      <li><span class="pill">Physical</span> Tangible barriers (locks, fences, guards, cameras, bollards).</li>
+    </ul>
+
+    <h3>Types of Controls (WHAT it does)</h3>
+    <table>
+      <tr><th>Type</th><th>Purpose</th><th>Example</th></tr>
+      <tr><td>Preventive</td><td>Stops an incident before it happens</td><td>Firewall, MFA, locked door</td></tr>
+      <tr><td>Deterrent</td><td>Discourages an attacker from trying</td><td>Warning sign, visible camera, "Beware of dog"</td></tr>
+      <tr><td>Detective</td><td>Identifies an incident in progress / after</td><td>SIEM alert, IDS, motion sensor, log review</td></tr>
+      <tr><td>Corrective</td><td>Fixes / restores after an incident</td><td>Restoring from backup, patching, isolating host</td></tr>
+      <tr><td>Compensating</td><td>Alternative when primary control isn't feasible</td><td>Manual review when MFA not supported</td></tr>
+      <tr><td>Directive</td><td>Tells people what to do (policy guidance)</td><td>AUP, security policy, signage</td></tr>
+    </table>
+  </div>
+
+  <div class="note-block">
+    <h2>1.2 Fundamental Security Concepts</h2>
+
+    <h3>CIA Triad</h3>
+    <ul>
+      <li><b>Confidentiality</b> — only authorized parties can read data (encryption, access controls).</li>
+      <li><b>Integrity</b> — data is not altered improperly (hashing, digital signatures).</li>
+      <li><b>Availability</b> — data/services are accessible when needed (redundancy, backups, DDoS mitigation).</li>
+    </ul>
+
+    <h3>Non-Repudiation</h3>
+    <p>Ensures a party cannot deny an action they performed. Achieved via digital signatures, audit logs, and video evidence.</p>
+
+    <h3>AAA Framework</h3>
+    <ul>
+      <li><b>Authentication</b> — proves identity (something you know/have/are/do/somewhere you are).</li>
+      <li><b>Authorization</b> — defines what an authenticated subject may do (RBAC, ABAC, MAC, DAC).</li>
+      <li><b>Accounting</b> — tracks/records actions for audit (logs, RADIUS/TACACS+).</li>
+      <li>Authentication applies to <b>people</b> AND to <b>systems</b> (e.g., device certificates, mutual TLS).</li>
+    </ul>
+
+    <h3>Gap Analysis</h3>
+    <p>Comparison of current security posture vs. desired/required state (e.g., NIST CSF, ISO 27001) to identify what's missing.</p>
+
+    <h3>Zero Trust — "Never trust, always verify"</h3>
+    <p>No implicit trust based on network location. Every request is authenticated, authorized, and continuously validated.</p>
+    <table>
+      <tr><th>Plane</th><th>Components</th></tr>
+      <tr><td><b>Control Plane</b></td>
+        <td>
+          • <b>Adaptive Identity</b> — context-aware (location, device, risk)<br>
+          • <b>Threat Scope Reduction</b> — minimize attack surface<br>
+          • <b>Policy-Driven Access Control</b> — decisions from defined policies<br>
+          • <b>Policy Engine (PE)</b> — makes the access decision<br>
+          • <b>Policy Administrator (PA)</b> — establishes/communicates the decision
+        </td>
+      </tr>
+      <tr><td><b>Data Plane</b></td>
+        <td>
+          • <b>Implicit Trust Zones</b> — areas where trust is assumed (Zero Trust eliminates these)<br>
+          • <b>Subject/System</b> — the user or device requesting access<br>
+          • <b>Policy Enforcement Point (PEP)</b> — enforces the PA's decision (gateway/proxy)
+        </td>
+      </tr>
+    </table>
+
+    <h3>Physical Security</h3>
+    <ul>
+      <li><b>Bollards</b> — short posts blocking vehicle ramming.</li>
+      <li><b>Access control vestibule (mantrap)</b> — two-door system preventing tailgating.</li>
+      <li><b>Fencing</b> — perimeter deterrent/barrier.</li>
+      <li><b>Video surveillance (CCTV)</b> — detective + deterrent.</li>
+      <li><b>Security guard</b> — flexible, judgment-based control.</li>
+      <li><b>Access badge</b> — RFID/smartcard for identification + access.</li>
+      <li><b>Lighting</b> — deterrent and aids surveillance.</li>
+      <li><b>Sensors</b>:
+        <ul>
+          <li>Infrared — detects heat/body movement</li>
+          <li>Pressure — triggers when weight applied</li>
+          <li>Microwave — detects motion via reflected microwaves</li>
+          <li>Ultrasonic — detects motion via sound-wave reflection</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>Deception and Disruption Technology</h3>
+    <ul>
+      <li><b>Honeypot</b> — decoy <i>system</i> to attract/study attackers.</li>
+      <li><b>Honeynet</b> — entire decoy <i>network</i> of honeypots.</li>
+      <li><b>Honeyfile</b> — fake file (e.g., "passwords.xlsx") that triggers an alert if accessed.</li>
+      <li><b>Honeytoken</b> — fake data/credential planted as a tripwire (e.g., fake API key).</li>
+    </ul>
+  </div>
+
+  <div class="note-block">
+    <h2>1.3 Change Management Processes &amp; Security Impact</h2>
+
+    <h3>Business Processes</h3>
+    <ul>
+      <li><b>Approval process</b> — formal sign-off (often via Change Advisory Board / CAB).</li>
+      <li><b>Ownership</b> — who is accountable for the change.</li>
+      <li><b>Stakeholders</b> — anyone affected (users, ops, security, business owners).</li>
+      <li><b>Impact analysis</b> — what could break or be affected (security, compliance, uptime).</li>
+      <li><b>Test results</b> — proof the change works in test/staging.</li>
+      <li><b>Backout plan</b> — how to roll back if the change fails.</li>
+      <li><b>Maintenance window</b> — agreed time slot to perform the change.</li>
+      <li><b>Standard operating procedure (SOP)</b> — documented steps for repeatable changes.</li>
+    </ul>
+
+    <h3>Technical Implications</h3>
+    <ul>
+      <li><b>Allow lists / Deny lists</b> — updates to firewall, EDR, app controls.</li>
+      <li><b>Restricted activities</b> — what's not permitted during the window.</li>
+      <li><b>Downtime</b> — planned outage of services.</li>
+      <li><b>Service / Application restart</b> — required to apply changes.</li>
+      <li><b>Legacy applications</b> — limited support; risky to change.</li>
+      <li><b>Dependencies</b> — other systems affected by the change.</li>
+    </ul>
+
+    <h3>Documentation</h3>
+    <ul>
+      <li>Update <b>diagrams</b> (network, data flow).</li>
+      <li>Update <b>policies and procedures</b>.</li>
+    </ul>
+
+    <h3>Version Control</h3>
+    <p>Tracks changes to code, configs, and documents (e.g., Git). Enables rollback, accountability, and audit.</p>
+  </div>
+
+  <div class="note-block">
+    <h2>1.4 Cryptographic Solutions</h2>
+
+    <h3>Public Key Infrastructure (PKI)</h3>
+    <ul>
+      <li><b>Public key</b> — shared openly; encrypts data or verifies signatures.</li>
+      <li><b>Private key</b> — kept secret; decrypts or signs.</li>
+      <li><b>Key escrow</b> — third party holds a copy of keys for recovery / legal access.</li>
+    </ul>
+
+    <h3>Encryption</h3>
+    <p><b>Levels:</b> Full-disk, Partition, File, Volume, Database, Record.<br>
+    <b>Transport / communication:</b> TLS, IPsec, SSH protect data in motion.</p>
+    <table>
+      <tr><th></th><th>Symmetric</th><th>Asymmetric</th></tr>
+      <tr><td>Keys</td><td>One shared secret</td><td>Public + private pair</td></tr>
+      <tr><td>Speed</td><td>Fast</td><td>Slow</td></tr>
+      <tr><td>Use</td><td>Bulk data encryption</td><td>Key exchange, signatures</td></tr>
+      <tr><td>Examples</td><td>AES, ChaCha20, 3DES</td><td>RSA, ECC, DSA, Diffie-Hellman</td></tr>
+    </table>
+    <ul>
+      <li><b>Key exchange</b> — securely sharing keys (e.g., Diffie-Hellman, ECDH).</li>
+      <li><b>Algorithms</b> — choose modern/strong (AES-256, RSA-2048+, ECC).</li>
+      <li><b>Key length</b> — longer = stronger (subject to algorithm).</li>
+    </ul>
+
+    <h3>Cryptographic Tools</h3>
+    <ul>
+      <li><b>TPM (Trusted Platform Module)</b> — chip on motherboard storing keys, performing crypto, supports BitLocker / secure boot.</li>
+      <li><b>HSM (Hardware Security Module)</b> — dedicated appliance for high-volume key management (CAs, payment systems).</li>
+      <li><b>Key Management System (KMS)</b> — centralized service to generate/store/rotate keys (often cloud-based: AWS KMS, Azure Key Vault).</li>
+      <li><b>Secure Enclave</b> — isolated CPU region for sensitive ops (Apple Secure Enclave, Intel SGX).</li>
+    </ul>
+
+    <h3>Obfuscation</h3>
+    <ul>
+      <li><b>Steganography</b> — hiding data inside other data (e.g., image, audio).</li>
+      <li><b>Tokenization</b> — replacing sensitive data with a non-sensitive token (common in PCI/credit cards). Reversible via lookup.</li>
+      <li><b>Data masking</b> — partial hiding (e.g., XXXX-XXXX-XXXX-1234). Often irreversible / for display.</li>
+    </ul>
+
+    <h3>Hashing &amp; Salting</h3>
+    <ul>
+      <li><b>Hashing</b> — one-way function producing fixed-length digest (SHA-256, SHA-3). Used for integrity, password storage.</li>
+      <li><b>Salting</b> — random value added before hashing to defeat rainbow tables.</li>
+      <li><b>Key stretching</b> — repeated hashing (PBKDF2, bcrypt, scrypt, Argon2) to slow brute-force.</li>
+    </ul>
+
+    <h3>Digital Signatures</h3>
+    <p>Sender hashes a message and encrypts the hash with their <b>private key</b>. Recipient decrypts with sender's <b>public key</b> and compares hashes. Provides <b>integrity, authentication, non-repudiation</b>.</p>
+
+    <h3>Blockchain &amp; Open Public Ledger</h3>
+    <p>Distributed, immutable ledger where each block is hash-linked to the previous. Anyone can verify; tampering breaks the chain. Use cases: cryptocurrency, supply chain, identity.</p>
+
+    <h3>Certificates</h3>
+    <ul>
+      <li><b>Certificate Authority (CA)</b> — trusted issuer that signs certificates.</li>
+      <li><b>CRL (Certificate Revocation List)</b> — list of revoked certificates published by the CA.</li>
+      <li><b>OCSP (Online Certificate Status Protocol)</b> — real-time check of cert revocation status (faster than CRL).</li>
+      <li><b>Self-signed</b> — signed by the same entity it identifies; used internally / not trusted by browsers.</li>
+      <li><b>Third-party</b> — issued by a public CA (DigiCert, Let's Encrypt) — trusted by browsers.</li>
+      <li><b>Root of trust</b> — top of the cert chain; preinstalled trusted root CAs.</li>
+      <li><b>CSR (Certificate Signing Request)</b> — file generated containing public key + identity info, sent to CA for signing.</li>
+      <li><b>Wildcard certificate</b> — covers all subdomains of a domain (*.example.com).</li>
+    </ul>
+  </div>
+
+</section>
+
+<!-- ============ FLASHCARDS ============ -->
+<section id="flashcards" class="tab-content">
+  <div class="flashcard-controls">
+    <button id="prevCard">← Previous</button>
+    <span class="flashcard-counter"><span id="cardNum">1</span> / 40</span>
+    <button id="nextCard">Next →</button>
+  </div>
+  <div class="flashcard" id="flashcard">
+    <div class="flashcard-inner">
+      <div class="flashcard-front" id="cardFront">Loading…</div>
+      <div class="flashcard-back" id="cardBack">Loading…</div>
+    </div>
+  </div>
+  <p class="hint">Click the card to flip. Use Previous / Next or arrow keys.</p>
+</section>
+
+<!-- ============ MCQ ============ -->
+<section id="mcq" class="tab-content">
+  <div class="mcq-score-bar">
+    Score: <span id="score">0</span> / <span id="answered">0</span> answered (of 40)
+    <button class="reset-btn" id="resetMcq">Reset</button>
+  </div>
+  <div id="mcqContainer"></div>
+</section>
+
+</main>
+
+<footer>
+  CompTIA Security+ SY0-701 — Domain 1 Study Pack · Aligned to official exam objectives (effective Nov 2023, current as of 2026).
+</footer>
+
+<script>
+/* ================= TAB SWITCHING ================= */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+/* ================= FLASHCARDS ================= */
+const flashcards = [
+  { q: "What are the four CATEGORIES of security controls?", a: "Technical, Managerial, Operational, and Physical." },
+  { q: "What are the six TYPES of security controls?", a: "Preventive, Deterrent, Detective, Corrective, Compensating, and Directive." },
+  { q: "Which control TYPE is a firewall?", a: "Preventive (Technical category) — it blocks unauthorized traffic before damage occurs." },
+  { q: "Which control TYPE is a 'Beware of Dog' sign?", a: "Deterrent — it discourages an attacker but doesn't physically prevent entry." },
+  { q: "Which control TYPE is restoring from a backup after ransomware?", a: "Corrective — it restores systems after an incident has occurred." },
+  { q: "Define a Compensating control.", a: "An alternative control used when the primary/preferred control isn't feasible (e.g., manual reviews when MFA isn't supported)." },
+  { q: "Define a Directive control with an example.", a: "A control that instructs personnel on what to do — e.g., an Acceptable Use Policy (AUP) or security signage." },
+  { q: "What does the CIA triad stand for?", a: "Confidentiality, Integrity, and Availability — the three core goals of information security." },
+  { q: "What is Non-repudiation and how is it achieved?", a: "Assurance that a party cannot deny their actions. Achieved through digital signatures, audit logs, and biometrics." },
+  { q: "What does AAA stand for?", a: "Authentication (who you are), Authorization (what you can do), Accounting (what you did)." },
+  { q: "Name four authorization models.", a: "RBAC (Role-Based), ABAC (Attribute-Based), MAC (Mandatory), and DAC (Discretionary)." },
+  { q: "What is a Gap Analysis?", a: "A comparison of current security posture against a desired standard (e.g., NIST CSF) to identify deficiencies." },
+  { q: "State the core principle of Zero Trust.", a: "'Never trust, always verify.' No implicit trust is granted based on network location; every request is authenticated and authorized." },
+  { q: "What is Adaptive Identity in Zero Trust?", a: "Identity verification that considers context — location, device posture, behavior, time — to make risk-based access decisions." },
+  { q: "What does the Policy Engine (PE) do in Zero Trust?", a: "It evaluates policies against the request and MAKES the access decision (grant/deny)." },
+  { q: "What does the Policy Administrator (PA) do in Zero Trust?", a: "It establishes/terminates the connection by communicating the PE's decision to the enforcement point." },
+  { q: "What does the Policy Enforcement Point (PEP) do?", a: "It ENFORCES the access decision — allowing or blocking the actual data/network traffic on the data plane." },
+  { q: "What is Threat Scope Reduction in Zero Trust?", a: "Minimizing the attack surface and limiting what a compromised credential or device can reach." },
+  { q: "What is a bollard?", a: "A short, sturdy vertical post used to prevent vehicles from ramming a building or area." },
+  { q: "What is an access control vestibule (mantrap)?", a: "A small chamber with two interlocking doors — only one opens at a time — preventing tailgating/piggybacking." },
+  { q: "Compare a honeypot vs. a honeynet.", a: "A honeypot is a single decoy system; a honeynet is an entire network of honeypots designed to study attackers." },
+  { q: "What is a honeyfile?", a: "A decoy file (e.g., 'passwords.xlsx') planted to trigger an alert if it is accessed or exfiltrated." },
+  { q: "What is a honeytoken?", a: "A fake credential, API key, or piece of data planted as a tripwire to detect unauthorized access." },
+  { q: "Why does change management require a backout plan?", a: "So the team can quickly roll back to the previous state if the change causes failures or security issues." },
+  { q: "What is a maintenance window?", a: "A pre-approved time period during which changes can be made, often when usage is low to minimize impact." },
+  { q: "Why is version control important for security?", a: "It tracks every change with author, timestamp, and reason — enabling rollback, audit, and accountability." },
+  { q: "Difference between symmetric and asymmetric encryption?", a: "Symmetric uses one shared key (fast, bulk data — e.g., AES). Asymmetric uses public/private key pairs (slower, used for key exchange & signatures — e.g., RSA, ECC)." },
+  { q: "What is key escrow?", a: "A trusted third party holds a copy of cryptographic keys, allowing recovery or lawful access." },
+  { q: "What is a TPM?", a: "Trusted Platform Module — a chip on the motherboard that securely stores keys and supports features like BitLocker and Secure Boot." },
+  { q: "What is an HSM?", a: "Hardware Security Module — a dedicated appliance for generating, storing, and managing keys at high volume (e.g., for CAs)." },
+  { q: "What is steganography?", a: "Hiding data inside other data, such as concealing a message within an image or audio file." },
+  { q: "Tokenization vs. data masking?", a: "Tokenization replaces sensitive data with a reversible token via lookup. Masking partially hides data (e.g., XXXX-1234) and is typically irreversible / for display." },
+  { q: "Why do we salt password hashes?", a: "A unique random salt per password defeats precomputed rainbow tables and ensures identical passwords have different hashes." },
+  { q: "What is key stretching and name two algorithms?", a: "Repeated hashing to make brute-force slow. Examples: PBKDF2, bcrypt, scrypt, Argon2." },
+  { q: "How does a digital signature work?", a: "Sender hashes the message and encrypts the hash with their private key. Recipient decrypts with the sender's public key and compares hashes — provides integrity, authentication, and non-repudiation." },
+  { q: "What is the role of a Certificate Authority (CA)?", a: "A trusted entity that issues, signs, and revokes digital certificates, vouching for the identity of the certificate holder." },
+  { q: "CRL vs. OCSP?", a: "CRL is a downloadable list of revoked certificates published periodically. OCSP provides real-time, on-demand revocation status — faster and more current." },
+  { q: "What is a CSR?", a: "Certificate Signing Request — a file containing the public key and identity info that you submit to a CA to obtain a signed certificate." },
+  { q: "What is a wildcard certificate?", a: "A certificate that secures a domain and ALL of its first-level subdomains using *.example.com." },
+  { q: "What is the 'root of trust' in PKI?", a: "The top-level trusted root CA whose certificate is preinstalled in operating systems and browsers — the anchor of every trust chain." }
+];
+
+let currentCard = 0;
+const cardFront = document.getElementById('cardFront');
+const cardBack = document.getElementById('cardBack');
+const cardNum = document.getElementById('cardNum');
+const flashcardEl = document.getElementById('flashcard');
+
+function renderCard() {
+  flashcardEl.classList.remove('flipped');
+  cardFront.textContent = flashcards[currentCard].q;
+  cardBack.textContent = flashcards[currentCard].a;
+  cardNum.textContent = currentCard + 1;
+}
+flashcardEl.addEventListener('click', () => flashcardEl.classList.toggle('flipped'));
+document.getElementById('nextCard').addEventListener('click', () => {
+  currentCard = (currentCard + 1) % flashcards.length;
+  renderCard();
+});
+document.getElementById('prevCard').addEventListener('click', () => {
+  currentCard = (currentCard - 1 + flashcards.length) % flashcards.length;
+  renderCard();
+});
+document.addEventListener('keydown', (e) => {
+  if (!document.getElementById('flashcards').classList.contains('active')) return;
+  if (e.key === 'ArrowRight') document.getElementById('nextCard').click();
+  if (e.key === 'ArrowLeft') document.getElementById('prevCard').click();
+  if (e.key === ' ') { e.preventDefault(); flashcardEl.classList.toggle('flipped'); }
+});
+renderCard();
+
+/* ================= MCQ ================= */
+const mcqs = [
+  { q: "An organization installs warning signs on its perimeter fence. What TYPE of control is this?",
+    options: ["Preventive", "Deterrent", "Detective", "Corrective"], correct: 1,
+    exp: "Warning signs discourage attackers from attempting entry but do not physically prevent it — that's a deterrent control." },
+  { q: "A company writes a formal security policy classifying all corporate data. Which CATEGORY of control is this?",
+    options: ["Technical", "Physical", "Operational", "Managerial"], correct: 3,
+    exp: "Policies, risk assessments, and security planning are managerial (administrative) controls." },
+  { q: "Which control is BEST described as compensating?",
+    options: [
+      "A firewall blocking inbound traffic",
+      "Manual log review when an automated SIEM is unavailable",
+      "A camera recording activity",
+      "An AUP signed by employees"
+    ], correct: 1,
+    exp: "Compensating controls are alternatives used when the primary control can't be implemented." },
+  { q: "Which of the following BEST represents the Integrity component of the CIA triad?",
+    options: ["AES encryption", "RAID 5 storage", "SHA-256 hashing", "Multi-factor authentication"], correct: 2,
+    exp: "Hashing detects unauthorized changes to data, supporting integrity. AES = confidentiality; RAID = availability; MFA = authentication." },
+  { q: "A digital signature provides which of the following? (BEST answer)",
+    options: ["Confidentiality only", "Availability and integrity",
+      "Integrity, authentication, and non-repudiation", "Encryption of bulk data"], correct: 2,
+    exp: "Digital signatures hash + private-key encrypt the hash, providing integrity, authentication, and non-repudiation." },
+  { q: "In Zero Trust, which component MAKES the access decision?",
+    options: ["Policy Enforcement Point", "Policy Engine", "Policy Administrator", "Subject"], correct: 1,
+    exp: "The Policy Engine (PE) evaluates policies and makes the grant/deny decision. The PA communicates it; the PEP enforces it." },
+  { q: "Which Zero Trust component physically allows or blocks traffic on the data plane?",
+    options: ["Policy Engine", "Policy Administrator", "Policy Enforcement Point", "Adaptive Identity"], correct: 2,
+    exp: "The PEP sits in the data plane and enforces the decision (e.g., a gateway/proxy)." },
+  { q: "What is the BEST description of Adaptive Identity?",
+    options: [
+      "Authentication using only a password",
+      "Identity verification based on contextual signals like device, location, and risk",
+      "A fixed role-based access list",
+      "An anonymous user account"
+    ], correct: 1,
+    exp: "Adaptive identity uses real-time context (device posture, geolocation, behavior, risk) to make authentication decisions." },
+  { q: "An employee opens a file named 'executive_salaries.xlsx' on a server they shouldn't access, and SOC immediately gets an alert. This is MOST likely a:",
+    options: ["Honeypot", "Honeynet", "Honeyfile", "Honeytoken"], correct: 2,
+    exp: "A honeyfile is a decoy file specifically designed to trigger an alert when accessed." },
+  { q: "Which of the following is a DECOY ENTIRE NETWORK designed to engage attackers?",
+    options: ["Honeypot", "Honeynet", "Honeyfile", "Honeytoken"], correct: 1,
+    exp: "A honeynet is a network of honeypots — a decoy environment, not just a single system." },
+  { q: "Bollards are BEST classified as which type of control?",
+    options: ["Detective / Technical", "Preventive / Physical", "Corrective / Operational", "Deterrent / Managerial"], correct: 1,
+    exp: "Bollards physically prevent vehicle ramming — preventive in type and physical in category." },
+  { q: "An access control vestibule prevents which attack?",
+    options: ["Phishing", "Tailgating", "SQL injection", "DNS poisoning"], correct: 1,
+    exp: "A vestibule (mantrap) allows only one person through at a time, blocking tailgating/piggybacking." },
+  { q: "An infrared sensor detects which of the following?",
+    options: ["Sound waves", "Body heat", "Pressure", "Magnetic fields"], correct: 1,
+    exp: "Passive infrared (PIR) sensors detect heat signatures from people or animals." },
+  { q: "What does AAA stand for in security?",
+    options: [
+      "Audit, Authorization, Access",
+      "Authentication, Authorization, Accounting",
+      "Application, Asset, Architecture",
+      "Automation, Authorization, Auditing"
+    ], correct: 1,
+    exp: "AAA = Authentication, Authorization, Accounting — the framework for managing access." },
+  { q: "What is a gap analysis used for?",
+    options: [
+      "Measuring network bandwidth",
+      "Comparing the current security posture to a target standard",
+      "Detecting malware",
+      "Patching vulnerabilities"
+    ], correct: 1,
+    exp: "Gap analysis identifies what's missing between the current state and a desired security framework or standard." },
+  { q: "Before a major firewall change, the team documents how to revert if something fails. This is the:",
+    options: ["Impact analysis", "Backout plan", "Approval process", "Maintenance window"], correct: 1,
+    exp: "A backout (rollback) plan describes how to undo the change if it fails." },
+  { q: "Who typically approves a major change in a structured change management process?",
+    options: ["The end user", "The on-call engineer", "The Change Advisory Board (CAB)", "The marketing team"], correct: 2,
+    exp: "Most enterprises route significant changes through a CAB for formal approval." },
+  { q: "Which of the following is a TECHNICAL implication of change management?",
+    options: ["Updating the AUP", "Restarting an application", "Drafting a press release", "Holding a stakeholder meeting"], correct: 1,
+    exp: "Restarts, allow/deny lists, downtime, and dependencies are technical implications of changes." },
+  { q: "Why is version control important after a configuration change?",
+    options: [
+      "It enables rollback and provides an audit trail",
+      "It encrypts the configuration",
+      "It compresses files",
+      "It anonymizes the user"
+    ], correct: 0,
+    exp: "Version control records who changed what and when, enabling rollback and accountability." },
+  { q: "Which encryption type is BEST suited to encrypt large amounts of data quickly?",
+    options: ["RSA (asymmetric)", "AES (symmetric)", "Diffie-Hellman", "ECDSA"], correct: 1,
+    exp: "Symmetric ciphers like AES are fast and ideal for bulk data; asymmetric is slow." },
+  { q: "Which is an ASYMMETRIC algorithm?",
+    options: ["AES", "ChaCha20", "RSA", "3DES"], correct: 2,
+    exp: "RSA uses public/private key pairs. AES, ChaCha20, and 3DES are symmetric." },
+  { q: "Diffie-Hellman is primarily used for:",
+    options: ["Hashing passwords", "Encrypting disks", "Secure key exchange", "Digital certificates"], correct: 2,
+    exp: "Diffie-Hellman (and ECDH) enables two parties to securely derive a shared secret over an insecure channel." },
+  { q: "What is the PRIMARY purpose of a TPM?",
+    options: [
+      "To compress files",
+      "To securely store keys and support features like full-disk encryption and Secure Boot",
+      "To accelerate graphics",
+      "To replace the BIOS"
+    ], correct: 1,
+    exp: "A TPM provides hardware-rooted key storage and crypto operations — used by BitLocker, Secure Boot, etc." },
+  { q: "An organization needs to manage millions of cryptographic operations for its public-facing CA. What would BEST suit this need?",
+    options: ["TPM", "HSM", "Secure Enclave", "USB token"], correct: 1,
+    exp: "An HSM (Hardware Security Module) is a high-performance dedicated appliance for enterprise-scale key management." },
+  { q: "Which describes steganography?",
+    options: [
+      "Encrypting a message with AES",
+      "Hashing a password with bcrypt",
+      "Hiding a message inside an image file",
+      "Replacing card numbers with tokens"
+    ], correct: 2,
+    exp: "Steganography conceals data within other data (image, audio, video)." },
+  { q: "Tokenization differs from encryption in that:",
+    options: [
+      "Tokenization is faster and uses keys",
+      "Tokenization replaces data with a non-sensitive surrogate value via a lookup, with no key needed",
+      "Tokenization is the same as hashing",
+      "Tokenization is irreversible"
+    ], correct: 1,
+    exp: "Tokenization swaps sensitive data for a token; the mapping is stored in a secure vault — no encryption key is needed to detokenize." },
+  { q: "What is the purpose of salting a password before hashing?",
+    options: [
+      "To make hashes shorter",
+      "To prevent rainbow-table attacks and ensure unique hashes for identical passwords",
+      "To encrypt the password",
+      "To allow password recovery"
+    ], correct: 1,
+    exp: "A salt is unique random data added before hashing — defeats rainbow tables and ensures identical passwords hash differently." },
+  { q: "Which is an example of key stretching?",
+    options: ["MD5", "SHA-1", "PBKDF2", "AES-CBC"], correct: 2,
+    exp: "PBKDF2, bcrypt, scrypt, and Argon2 deliberately slow down hashing to resist brute force." },
+  { q: "Which provides the FASTEST real-time check of certificate validity?",
+    options: ["CRL", "OCSP", "CSR", "PEM"], correct: 1,
+    exp: "OCSP queries the CA in real time. CRLs are downloaded lists, slower and may be stale." },
+  { q: "A developer generates a file containing the server's public key + identity info to send to a CA. This file is a:",
+    options: ["CRL", "OCSP request", "CSR", "PFX bundle"], correct: 2,
+    exp: "A Certificate Signing Request (CSR) is generated and sent to a CA for signing." },
+  { q: "An admin needs to secure mail.example.com, www.example.com, and shop.example.com with a single cert. What's the BEST option?",
+    options: ["Self-signed certificate", "Wildcard certificate (*.example.com)", "Root certificate", "CRL"], correct: 1,
+    exp: "A wildcard certificate covers any first-level subdomain of a domain in a single cert." },
+  { q: "Which scenario BEST shows non-repudiation?",
+    options: [
+      "User encrypts an email with the recipient's public key",
+      "User signs a contract with their private key, and signature can be verified by their public key",
+      "User logs into a VPN with username and password",
+      "User backs up files to the cloud"
+    ], correct: 1,
+    exp: "Signing with a private key proves origin — the user cannot later deny it (non-repudiation)." },
+  { q: "Which is a DETECTIVE control?",
+    options: ["Encryption", "SIEM correlation alerts", "Door lock", "AUP"], correct: 1,
+    exp: "A SIEM detects suspicious activity through log correlation — detective in nature." },
+  { q: "Privacy law requires data masking on customer screens. Masking is BEST described as:",
+    options: [
+      "Encryption of the data at rest",
+      "Replacing characters in displayed values to obscure them (e.g., XXXX-1234)",
+      "Hashing the data with SHA-256",
+      "Storing data in a different country"
+    ], correct: 1,
+    exp: "Data masking partially hides data for display purposes — typically irreversible for the viewer." },
+  { q: "Which BEST describes Zero Trust's view of network location?",
+    options: [
+      "The internal network is automatically trusted",
+      "Trust is granted per-IP",
+      "No implicit trust is granted based on location — every request is verified",
+      "Only VPN users are trusted"
+    ], correct: 2,
+    exp: "Zero Trust eliminates the assumption that 'inside the network = trusted' — verification is continuous." },
+  { q: "Which is an example of authenticating a SYSTEM (not a person)?",
+    options: ["Username + password", "Fingerprint scan", "Mutual TLS using device certificates", "Smart card with PIN"], correct: 2,
+    exp: "Mutual TLS with device certificates authenticates the system/device, not a human user." },
+  { q: "A company adds an extra random value to each password before hashing. This is called:",
+    options: ["Pepper", "Salt", "Token", "Cipher"], correct: 1,
+    exp: "A salt is the random per-password value added before hashing. (A pepper is a separate site-wide secret — not salt.)" },
+  { q: "A blockchain provides which PRIMARY security property?",
+    options: ["Confidentiality of transactions", "Tamper-evident integrity through chained hashes", "Faster encryption", "Anonymity for all users"], correct: 1,
+    exp: "Each block is hash-linked to the previous, making tampering detectable — the strength is integrity." },
+  { q: "A self-signed certificate is BEST suited for:",
+    options: [
+      "A public e-commerce website",
+      "Internal lab/test systems where browsers don't need to trust it by default",
+      "Replacing the root CA",
+      "Signing software for public distribution"
+    ], correct: 1,
+    exp: "Self-signed certs are not trusted by default in browsers; appropriate for internal/test use only." },
+  { q: "Which sequence correctly orders these in a Zero Trust access flow?",
+    options: [
+      "PEP → PA → PE",
+      "Subject → PEP → PA → PE → decision enforced by PEP",
+      "PE → Subject → PEP",
+      "PA → Subject → PE"
+    ], correct: 1,
+    exp: "Subject requests access through the PEP. The PA consults the PE for a decision, communicates it back, and the PEP enforces it." }
+];
+
+let score = 0, answered = 0;
+const mcqContainer = document.getElementById('mcqContainer');
+const scoreEl = document.getElementById('score');
+const answeredEl = document.getElementById('answered');
+
+function renderMcqs() {
+  mcqContainer.innerHTML = '';
+  score = 0; answered = 0;
+  scoreEl.textContent = score;
+  answeredEl.textContent = answered;
+  mcqs.forEach((m, idx) => {
+    const div = document.createElement('div');
+    div.className = 'mcq';
+    div.dataset.idx = idx;
+    let html = `<div class="mcq-question">${idx + 1}. ${m.q}</div><ul class="mcq-options">`;
+    m.options.forEach((opt, i) => {
+      html += `<li data-i="${i}">${String.fromCharCode(65 + i)}. ${opt}</li>`;
+    });
+    html += `</ul><div class="mcq-explanation"><b>Explanation:</b> ${m.exp}</div>`;
+    div.innerHTML = html;
+    mcqContainer.appendChild(div);
+
+    div.querySelectorAll('.mcq-options li').forEach(li => {
+      li.addEventListener('click', () => {
+        if (div.classList.contains('answered')) return;
+        const chosen = parseInt(li.dataset.i, 10);
+        const correctIdx = m.correct;
+        div.querySelectorAll('.mcq-options li').forEach((node, i) => {
+          if (i === correctIdx) node.classList.add('correct');
+          else if (i === chosen) node.classList.add('wrong');
+        });
+        if (chosen === correctIdx) score++;
+        answered++;
+        scoreEl.textContent = score;
+        answeredEl.textContent = answered;
+        div.classList.add('answered');
+      });
+    });
+  });
+}
+document.getElementById('resetMcq').addEventListener('click', renderMcqs);
+renderMcqs();
+</script>
+</body>
+</html>
