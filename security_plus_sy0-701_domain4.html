@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CompTIA Security+ SY0-701 — Domain 4: Security Operations</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --panel-2: #334155;
+    --accent: #a78bfa;
+    --accent-2: #c4b5fd;
+    --good: #4ade80;
+    --bad: #f87171;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --border: #475569;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  header {
+    background: linear-gradient(135deg, #4c1d95, #1e293b);
+    padding: 30px 20px;
+    text-align: center;
+    border-bottom: 3px solid var(--accent);
+  }
+  header h1 { margin: 0 0 8px; font-size: 1.8rem; }
+  header p { margin: 0; color: var(--muted); }
+  nav.tabs {
+    display: flex;
+    justify-content: center;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    flex-wrap: wrap;
+  }
+  nav.tabs button {
+    background: transparent;
+    color: var(--text);
+    border: none;
+    padding: 14px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+  }
+  nav.tabs button:hover { background: var(--panel-2); }
+  nav.tabs button.active {
+    border-bottom-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+  main { max-width: 1100px; margin: 0 auto; padding: 30px 20px; }
+  section.tab-content { display: none; }
+  section.tab-content.active { display: block; }
+
+  .note-block {
+    background: var(--panel);
+    border-left: 4px solid var(--accent);
+    padding: 20px 24px;
+    margin: 18px 0;
+    border-radius: 6px;
+  }
+  .note-block h2 { margin-top: 0; color: var(--accent-2); font-size: 1.3rem; }
+  .note-block h3 { color: var(--accent); margin-top: 18px; font-size: 1.05rem; }
+  .note-block ul { padding-left: 22px; }
+  .note-block li { margin-bottom: 6px; }
+  .pill {
+    display: inline-block;
+    background: var(--panel-2);
+    color: var(--accent-2);
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    margin-right: 6px;
+    font-weight: 600;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    background: var(--panel-2);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  th, td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    font-size: 0.92rem;
+    vertical-align: top;
+  }
+  th { background: #0f172a; color: var(--accent-2); }
+  tr:last-child td { border-bottom: none; }
+
+  .flashcard-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .flashcard-controls button {
+    background: var(--accent);
+    color: #0f172a;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .flashcard-controls button:hover { background: var(--accent-2); }
+  .flashcard-counter { color: var(--muted); font-weight: 600; }
+  .flashcard {
+    perspective: 1200px;
+    height: 280px;
+    margin: 0 auto;
+    max-width: 700px;
+  }
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    cursor: pointer;
+  }
+  .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.4);
+    font-size: 1.15rem;
+  }
+  .flashcard-front {
+    background: linear-gradient(135deg, #4c1d95, #6d28d9);
+    color: white;
+    font-weight: 600;
+  }
+  .flashcard-back {
+    background: linear-gradient(135deg, #14532d, #166534);
+    color: white;
+    transform: rotateY(180deg);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .hint { text-align: center; color: var(--muted); font-size: 0.85rem; margin-top: 12px; }
+
+  .mcq {
+    background: var(--panel);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 16px 0;
+    border-left: 4px solid var(--accent);
+  }
+  .mcq-question { font-weight: 600; margin-bottom: 14px; font-size: 1.05rem; }
+  .mcq-options { list-style: none; padding: 0; margin: 0; }
+  .mcq-options li {
+    background: var(--panel-2);
+    padding: 10px 14px;
+    margin: 6px 0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    border: 2px solid transparent;
+  }
+  .mcq-options li:hover { background: #475569; }
+  .mcq-options li.correct { background: #14532d; border-color: var(--good); }
+  .mcq-options li.wrong { background: #7f1d1d; border-color: var(--bad); }
+  .mcq-explanation {
+    margin-top: 12px;
+    padding: 12px;
+    background: #0f172a;
+    border-radius: 6px;
+    font-size: 0.92rem;
+    color: var(--muted);
+    display: none;
+    border-left: 3px solid var(--accent-2);
+  }
+  .mcq.answered .mcq-explanation { display: block; }
+  .mcq-score-bar {
+    background: var(--panel);
+    padding: 14px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+    position: sticky;
+    top: 56px;
+    z-index: 9;
+  }
+  .reset-btn {
+    background: var(--bad);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 10px;
+    font-weight: 600;
+  }
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CompTIA Security+ SY0-701</h1>
+  <p>Domain 4.0 — Security Operations (28% of exam) · Notes · 40 Flashcards · 40 MCQs</p>
+</header>
+
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="notes">📘 Notes</button>
+  <button class="tab-btn" data-tab="flashcards">🃏 Flashcards (40)</button>
+  <button class="tab-btn" data-tab="mcq">📝 MCQs (40)</button>
+</nav>
+
+<main>
+
+<section id="notes" class="tab-content active">
+
+  <div class="note-block">
+    <h2>4.1 Common Security Techniques for Computing Resources</h2>
+
+    <h3>Secure Baselines</h3>
+    <ul>
+      <li><b>Establish</b> — define a known-good secure configuration.</li>
+      <li><b>Deploy</b> — push the baseline to systems (imaging, GPO, MDM).</li>
+      <li><b>Maintain</b> — monitor for drift and re-apply.</li>
+    </ul>
+
+    <h3>Hardening Targets</h3>
+    <p>Mobile, workstations, switches, routers, cloud infrastructure, servers, ICS/SCADA, embedded systems, RTOS, IoT.</p>
+
+    <h3>Mobile Solutions</h3>
+    <ul>
+      <li><b>MDM (Mobile Device Management)</b> — central control: policy, remote wipe, encryption, app control.</li>
+      <li><b>Deployment models</b>:
+        <ul>
+          <li><b>BYOD</b> — Bring Your Own Device (employee-owned).</li>
+          <li><b>COPE</b> — Corporate-Owned, Personally Enabled.</li>
+          <li><b>CYOD</b> — Choose Your Own Device (from an approved list).</li>
+        </ul>
+      </li>
+      <li><b>Connection methods</b> — cellular, Wi-Fi, Bluetooth.</li>
+    </ul>
+
+    <h3>Wireless Security</h3>
+    <ul>
+      <li><b>WPA3</b> — current standard; uses SAE (Simultaneous Authentication of Equals) to replace the WPA2 4-way handshake.</li>
+      <li><b>AAA / RADIUS</b> — enterprise wireless auth (802.1X).</li>
+      <li><b>Cryptographic &amp; authentication protocols</b> — EAP-TLS, PEAP, etc.</li>
+    </ul>
+
+    <h3>Application Security</h3>
+    <ul>
+      <li><b>Input validation</b> — reject malformed/malicious input (defends SQLi, XSS).</li>
+      <li><b>Secure cookies</b> — Secure + HttpOnly flags.</li>
+      <li><b>Static code analysis (SAST)</b> — scan source code without running it.</li>
+      <li><b>Code signing</b> — verify integrity/origin of software.</li>
+      <li><b>Sandboxing</b> — run untrusted code in an isolated environment.</li>
+      <li><b>Monitoring</b> — continuous observation of resource behavior.</li>
+    </ul>
+  </div>
+
+  <div class="note-block">
+    <h2>4.2 Asset Management (Hardware, Software, Data)</h2>
+    <ul>
+      <li><b>Acquisition / procurement</b> — vetting and securely purchasing assets.</li>
+      <li><b>Assignment / accounting</b> — <b>ownership</b> (who is responsible) and <b>classification</b> (sensitivity).</li>
+      <li><b>Monitoring / asset tracking</b> — <b>inventory</b> (what we have) and <b>enumeration</b> (discovering devices on the network).</li>
+      <li><b>Disposal / decommissioning</b>:
+        <ul>
+          <li><b>Sanitization</b> — securely erase data (crypto-erase, overwrite).</li>
+          <li><b>Destruction</b> — physically destroy media (shred, degauss, incinerate).</li>
+          <li><b>Certification</b> — documented proof of destruction/sanitization.</li>
+          <li><b>Data retention</b> — keep data only as long as policy/law requires.</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="note-block">
+    <h2>4.3 Vulnerability Management</h2>
+
+    <h3>Identification Methods</h3>
+    <ul>
+      <li><b>Vulnerability scan</b> — automated discovery of weaknesses (credentialed vs. non-credentialed).</li>
+      <li><b>Application security</b> — <b>SAST</b> (static), <b>DAST</b> (dynamic, runs the app), package/dependency monitoring.</li>
+      <li><b>Threat feeds</b> — OSINT, proprietary/third-party feeds, info-sharing orgs (ISACs), dark web monitoring.</li>
+      <li><b>Penetration testing</b> — authorized simulated attack.</li>
+      <li><b>Responsible disclosure / bug bounty</b> — researchers report flaws (often for reward).</li>
+      <li><b>System / process audit</b>.</li>
+    </ul>
+
+    <h3>Analysis</h3>
+    <ul>
+      <li><b>Confirmation</b>: <b>true positive</b>, <b>false positive</b> (flagged but not real), <b>false negative</b> (missed real vuln), true negative.</li>
+      <li><b>Prioritize</b> — rank by risk.</li>
+      <li><b>CVSS</b> — Common Vulnerability Scoring System (0–10 severity).</li>
+      <li><b>CVE</b> — Common Vulnerabilities and Exposures (unique IDs).</li>
+      <li><b>Exposure factor</b>, <b>environmental variables</b>, <b>industry/organizational impact</b>, <b>risk tolerance</b>.</li>
+    </ul>
+
+    <h3>Response &amp; Remediation</h3>
+    <ul>
+      <li><b>Patching</b>, <b>insurance</b>, <b>segmentation</b>, <b>compensating controls</b>, <b>exceptions / exemptions</b> (formally accept the risk).</li>
+    </ul>
+
+    <h3>Validation &amp; Reporting</h3>
+    <ul>
+      <li><b>Validation</b> — rescanning, audit, verification confirm the fix worked.</li>
+      <li><b>Reporting</b> — communicate findings/metrics to stakeholders.</li>
+    </ul>
+  </div>
+
+  <div class="note-block">
+    <h2>4.4 Security Alerting &amp; Monitoring</h2>
+
+    <h3>Monitoring Resources</h3>
+    <p>Systems, applications, and infrastructure.</p>
+
+    <h3>Activities</h3>
+    <ul>
+      <li><b>Log aggregation</b> — collect logs centrally.</li>
+      <li><b>Alerting</b> — notify on suspicious events.</li>
+      <li><b>Scanning</b>, <b>reporting</b>, <b>archiving</b>.</li>
+      <li><b>Alert response &amp; remediation/validation</b>:
+        <ul>
+          <li><b>Quarantine</b> — isolate the affected system.</li>
+          <li><b>Alert tuning</b> — adjust rules to cut false positives/noise.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>Tools</h3>
+    <table>
+      <tr><th>Tool</th><th>Purpose</th></tr>
+      <tr><td><b>SCAP</b></td><td>Security Content Automation Protocol — standardizes config/vuln assessment.</td></tr>
+      <tr><td><b>Benchmarks</b></td><td>CIS/DISA STIG secure-config standards.</td></tr>
+      <tr><td><b>Agents / Agentless</b></td><td>Installed software vs. remote (protocol-based) collection.</td></tr>
+      <tr><td><b>SIEM</b></td><td>Security Information &amp; Event Management — aggregates, correlates, alerts.</td></tr>
+      <tr><td><b>Antivirus</b></td><td>Detects/removes malware.</td></tr>
+      <tr><td><b>DLP</b></td><td>Data Loss Prevention — stops sensitive data exfiltration.</td></tr>
+      <tr><td><b>SNMP traps</b></td><td>Device-initiated alerts to a network manager.</td></tr>
+      <tr><td><b>NetFlow</b></td><td>Records network flow/traffic metadata.</td></tr>
+      <tr><td><b>Vulnerability scanners</b></td><td>Nessus, OpenVAS, Qualys.</td></tr>
+    </table>
+  </div>
+
+  <div class="note-block">
+    <h2>4.5 Modify Enterprise Capabilities to Enhance Security</h2>
+    <ul>
+      <li><b>Firewall</b> — rules, access lists (ACLs), ports/protocols, screened subnets (DMZ).</li>
+      <li><b>IDS / IPS</b> — trends and signatures.</li>
+      <li><b>Web filter</b> — agent-based, centralized proxy, URL scanning, content categorization, block rules, reputation.</li>
+      <li><b>OS security</b> — Group Policy (Windows), SELinux (Linux mandatory access control).</li>
+      <li><b>Secure protocols</b> — protocol selection (use SSH not Telnet, HTTPS not HTTP), port selection, transport method.</li>
+      <li><b>DNS filtering</b> — block malicious domains at resolution.</li>
+      <li><b>Email security</b>:
+        <ul>
+          <li><b>SPF</b> — authorizes which servers may send for a domain.</li>
+          <li><b>DKIM</b> — cryptographically signs messages.</li>
+          <li><b>DMARC</b> — policy + reporting built on SPF/DKIM (what to do on failure).</li>
+          <li><b>Email gateway</b> — filters spam/malware/phishing.</li>
+        </ul>
+      </li>
+      <li><b>FIM (File Integrity Monitoring)</b> — alerts on unauthorized file changes.</li>
+      <li><b>DLP</b> — prevent data exfiltration.</li>
+      <li><b>NAC (Network Access Control)</b> — posture-check and authorize devices before granting access.</li>
+      <li><b>EDR / XDR</b> — Endpoint (and eXtended) Detection &amp; Response.</li>
+      <li><b>UBA (User Behavior Analytics)</b> — baseline behavior, alert on anomalies.</li>
+    </ul>
+  </div>
+
+  <div class="note-block">
+    <h2>4.6 Identity and Access Management (IAM)</h2>
+
+    <h3>Account Lifecycle</h3>
+    <ul>
+      <li><b>Provisioning / de-provisioning</b> — create on hire, disable/remove on termination.</li>
+      <li><b>Permission assignments</b>, <b>identity proofing</b> (verify who someone is).</li>
+    </ul>
+
+    <h3>Federation &amp; SSO</h3>
+    <ul>
+      <li><b>Federation</b> — trust identities across organizations/domains.</li>
+      <li><b>SSO</b> — one login for many services.</li>
+      <li><b>LDAP</b> — directory access protocol.</li>
+      <li><b>OAuth</b> — authorization (delegated access via tokens).</li>
+      <li><b>SAML</b> — XML-based authentication/SSO for web apps.</li>
+      <li><b>Attestation</b> — periodic verification that access rights are still appropriate.</li>
+    </ul>
+
+    <h3>Access Control Models</h3>
+    <table>
+      <tr><th>Model</th><th>Basis</th></tr>
+      <tr><td><b>MAC</b></td><td>Mandatory — labels/clearances set by system (military).</td></tr>
+      <tr><td><b>DAC</b></td><td>Discretionary — data owner sets permissions.</td></tr>
+      <tr><td><b>RBAC</b></td><td>Role-Based — permissions tied to job role.</td></tr>
+      <tr><td><b>Rule-based</b></td><td>Access via predefined rules (e.g., firewall ACLs).</td></tr>
+      <tr><td><b>ABAC</b></td><td>Attribute-Based — evaluates attributes (user, resource, environment).</td></tr>
+      <tr><td>Time-of-day</td><td>Restrict access to allowed hours.</td></tr>
+      <tr><td>Least privilege</td><td>Minimum access necessary.</td></tr>
+    </table>
+
+    <h3>Multifactor Authentication (MFA)</h3>
+    <ul>
+      <li><b>Factors</b>: something you <b>know</b> (password), <b>have</b> (token/phone), <b>are</b> (biometric), and <b>somewhere you are</b> (location).</li>
+      <li><b>Implementations</b>: biometrics, hard/soft tokens, security keys (FIDO2).</li>
+    </ul>
+
+    <h3>Passwords &amp; PAM</h3>
+    <ul>
+      <li><b>Password best practices</b> — length (most important), complexity, no reuse, expiration, age.</li>
+      <li><b>Password managers</b>, <b>passwordless</b> (passkeys, biometrics).</li>
+      <li><b>Privileged Access Management (PAM)</b>:
+        <ul>
+          <li><b>Just-in-time (JIT) permissions</b> — grant elevated access only when needed, briefly.</li>
+          <li><b>Password vaulting</b> — secure storage/checkout of privileged credentials.</li>
+          <li><b>Ephemeral credentials</b> — short-lived, auto-expiring credentials.</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+
+  <div class="note-block">
+    <h2>4.7 Automation &amp; Orchestration (Secure Operations)</h2>
+
+    <h3>Use Cases</h3>
+    <p>User/resource provisioning, guard rails, security groups, ticket creation, escalation, enabling/disabling services, continuous integration &amp; testing (CI/CD), integrations &amp; APIs.</p>
+
+    <h3>Benefits</h3>
+    <ul>
+      <li>Efficiency / time saving, enforcing baselines, standard infrastructure configurations, secure scaling, employee retention, faster reaction time, <b>workforce multiplier</b>.</li>
+    </ul>
+
+    <h3>Other Considerations</h3>
+    <ul>
+      <li><b>Complexity</b>, <b>cost</b>, <b>single point of failure</b>, <b>technical debt</b>, <b>ongoing supportability</b>.</li>
+    </ul>
+  </div>
+
+  <div class="note-block">
+    <h2>4.8 Incident Response</h2>
+
+    <h3>IR Process (memorize the order!)</h3>
+    <ol>
+      <li><b>Preparation</b> — policies, tools, training before anything happens.</li>
+      <li><b>Detection</b> — identify a potential incident.</li>
+      <li><b>Analysis</b> — confirm and scope it.</li>
+      <li><b>Containment</b> — limit the spread/damage.</li>
+      <li><b>Eradication</b> — remove the threat (malware, accounts).</li>
+      <li><b>Recovery</b> — restore systems to normal.</li>
+      <li><b>Lessons Learned</b> — post-incident review to improve.</li>
+    </ol>
+
+    <h3>Supporting Activities</h3>
+    <ul>
+      <li><b>Training</b> and <b>testing</b> — tabletop exercises, simulations.</li>
+      <li><b>Root cause analysis (RCA)</b> — find the underlying cause.</li>
+      <li><b>Threat hunting</b> — proactively search for hidden threats.</li>
+    </ul>
+
+    <h3>Digital Forensics</h3>
+    <ul>
+      <li><b>Legal hold</b> — preserve data relevant to litigation.</li>
+      <li><b>Chain of custody</b> — documented handling of evidence (who, what, when).</li>
+      <li><b>Acquisition</b> — collect evidence (image disks/memory) — capture volatile data first (order of volatility).</li>
+      <li><b>Reporting</b>, <b>preservation</b>, <b>e-discovery</b>.</li>
+    </ul>
+  </div>
+
+  <div class="note-block">
+    <h2>4.9 Data Sources to Support an Investigation</h2>
+
+    <h3>Log Data</h3>
+    <ul>
+      <li><b>Firewall logs</b> — allowed/blocked connections.</li>
+      <li><b>Application logs</b> — app-specific events.</li>
+      <li><b>Endpoint logs</b> — host-level activity.</li>
+      <li><b>OS-specific security logs</b> — Windows Security log, Linux auth logs.</li>
+      <li><b>IDS/IPS logs</b> — detected/blocked intrusions.</li>
+      <li><b>Network logs</b> — switch/router/flow data.</li>
+      <li><b>Metadata</b> — data about data (email headers, file timestamps).</li>
+    </ul>
+
+    <h3>Other Data Sources</h3>
+    <ul>
+      <li><b>Vulnerability scans</b>, <b>automated reports</b>, <b>dashboards</b>, <b>packet captures</b> (Wireshark/tcpdump — full content).</li>
+    </ul>
+  </div>
+
+</section>
+
+<section id="flashcards" class="tab-content">
+  <div class="flashcard-controls">
+    <button id="prevCard">← Previous</button>
+    <span class="flashcard-counter"><span id="cardNum">1</span> / 40</span>
+    <button id="nextCard">Next →</button>
+  </div>
+  <div class="flashcard" id="flashcard">
+    <div class="flashcard-inner">
+      <div class="flashcard-front" id="cardFront">Loading…</div>
+      <div class="flashcard-back" id="cardBack">Loading…</div>
+    </div>
+  </div>
+  <p class="hint">Click the card to flip. Use Previous / Next or arrow keys.</p>
+</section>
+
+<section id="mcq" class="tab-content">
+  <div class="mcq-score-bar">
+    Score: <span id="score">0</span> / <span id="answered">0</span> answered (of 40)
+    <button class="reset-btn" id="resetMcq">Reset</button>
+  </div>
+  <div id="mcqContainer"></div>
+</section>
+
+</main>
+
+<footer>
+  CompTIA Security+ SY0-701 — Domain 4 Study Pack · Aligned to official exam objectives (effective Nov 2023, current as of 2026).
+</footer>
+
+<script>
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+const flashcards = [
+  { q: "What are the three phases of working with a secure baseline?", a: "Establish (define the known-good config), Deploy (push it to systems), and Maintain (monitor for drift and re-apply)." },
+  { q: "BYOD vs. COPE vs. CYOD?", a: "BYOD = employee's own device. COPE = Corporate-Owned, Personally Enabled. CYOD = Choose Your Own Device from a company-approved list." },
+  { q: "What does MDM provide?", a: "Mobile Device Management - centralized policy enforcement, encryption, app control, and remote wipe/lock for mobile devices." },
+  { q: "What replaced the WPA2 4-way handshake in WPA3?", a: "SAE (Simultaneous Authentication of Equals), which resists offline dictionary attacks and provides forward secrecy." },
+  { q: "SAST vs. DAST?", a: "SAST (static) analyzes source code without running it. DAST (dynamic) tests the running application from the outside." },
+  { q: "What is sandboxing?", a: "Running untrusted code or files in an isolated environment so it cannot affect the host system - used for malware analysis and app testing." },
+  { q: "Sanitization vs. destruction in asset disposal?", a: "Sanitization securely erases data so media can be reused (crypto-erase, overwrite). Destruction physically destroys the media (shred, degauss, incinerate)." },
+  { q: "Why obtain a certificate of destruction?", a: "It provides documented, auditable proof that data/media was properly sanitized or destroyed - important for compliance and chain of accountability." },
+  { q: "False positive vs. false negative in vulnerability scanning?", a: "False positive: the scanner flags a vulnerability that doesn't actually exist. False negative: a real vulnerability that the scanner MISSES (more dangerous)." },
+  { q: "CVE vs. CVSS?", a: "CVE = a unique identifier for a specific known vulnerability. CVSS = a 0-10 scoring system that rates a vulnerability's severity." },
+  { q: "Credentialed vs. non-credentialed scan?", a: "Credentialed scans log in with valid accounts for deeper, more accurate results. Non-credentialed scans view the system as an outside attacker would - less detail." },
+  { q: "What is an exception/exemption in vulnerability response?", a: "A formal, documented decision to accept a risk and not remediate it (often temporarily), with management approval." },
+  { q: "How do you VALIDATE remediation?", a: "Rescanning, auditing, and verification to confirm the vulnerability was actually fixed." },
+  { q: "What does a SIEM do?", a: "Security Information and Event Management - aggregates logs from many sources, correlates events, and generates alerts for analysts." },
+  { q: "What is alert tuning?", a: "Adjusting detection rules and thresholds to reduce false positives and noise so analysts focus on real threats." },
+  { q: "What is SCAP?", a: "Security Content Automation Protocol - a suite of standards that automates vulnerability and security configuration assessment." },
+  { q: "Agent-based vs. agentless monitoring?", a: "Agent-based installs software on each host for deep, continuous data. Agentless collects remotely via standard protocols - easier to deploy but less detailed." },
+  { q: "What does NetFlow capture?", a: "Metadata about network traffic flows (source/dest IP, ports, protocol, bytes) - not full packet content." },
+  { q: "What is DLP?", a: "Data Loss Prevention - tools that detect and block unauthorized transfer of sensitive data (email, USB, cloud uploads)." },
+  { q: "SPF, DKIM, and DMARC - what does each do?", a: "SPF authorizes which servers may send for a domain. DKIM cryptographically signs messages. DMARC sets policy on SPF/DKIM failures and provides reporting." },
+  { q: "What is File Integrity Monitoring (FIM)?", a: "A control that detects and alerts when monitored files or system configurations are changed without authorization." },
+  { q: "What is NAC?", a: "Network Access Control - checks a device's identity and security posture (patches, AV) before allowing it onto the network." },
+  { q: "EDR vs. XDR?", a: "EDR (Endpoint Detection and Response) monitors and responds on endpoints. XDR (eXtended) correlates data across endpoints, network, email, and cloud for broader visibility." },
+  { q: "What is SELinux?", a: "Security-Enhanced Linux - implements Mandatory Access Control (MAC) on Linux, enforcing policies the user cannot override." },
+  { q: "What is identity proofing?", a: "The process of verifying that a person is who they claim to be before issuing credentials or access." },
+  { q: "What is federation?", a: "An arrangement that lets users authenticate across multiple organizations/domains using a trusted identity provider (e.g., login with one IdP across many services)." },
+  { q: "OAuth vs. SAML?", a: "OAuth is an authorization framework (delegated access via tokens, common for APIs/mobile). SAML is an XML-based standard for authentication and web SSO." },
+  { q: "What is access attestation?", a: "A periodic review/recertification confirming that users' access rights are still appropriate for their roles." },
+  { q: "MAC vs. DAC vs. RBAC?", a: "MAC: system enforces labels/clearances (rigid, military). DAC: data owner grants permissions (flexible). RBAC: permissions assigned to roles, users get roles." },
+  { q: "Name the four MFA factor categories.", a: "Something you know (password/PIN), something you have (token/phone), something you are (biometric), and somewhere you are (location)." },
+  { q: "Which password attribute provides the MOST strength?", a: "Length - longer passwords/passphrases dramatically increase the effort to brute force, more than complexity alone." },
+  { q: "What is Just-in-Time (JIT) access in PAM?", a: "Granting privileged access only at the moment it's needed and for a limited time, rather than standing/permanent admin rights." },
+  { q: "What are ephemeral credentials?", a: "Short-lived credentials that automatically expire after a brief period, reducing the window of exposure if stolen." },
+  { q: "What is a 'workforce multiplier' benefit of automation?", a: "Automation lets a small team accomplish far more by handling repetitive tasks, effectively multiplying the team's capacity." },
+  { q: "Name three risks/considerations of automation and orchestration.", a: "Any three of: complexity, cost, single point of failure, technical debt, and ongoing supportability." },
+  { q: "List the 7 steps of the incident response process in order.", a: "1) Preparation, 2) Detection, 3) Analysis, 4) Containment, 5) Eradication, 6) Recovery, 7) Lessons Learned." },
+  { q: "What is chain of custody?", a: "Documentation tracking who handled evidence, when, and what was done - preserving its integrity and admissibility in court." },
+  { q: "What is a legal hold?", a: "A directive to preserve all data potentially relevant to litigation, overriding normal deletion/retention schedules." },
+  { q: "What is threat hunting?", a: "Proactively and iteratively searching networks/endpoints for hidden threats that evaded existing automated defenses." },
+  { q: "In forensic acquisition, what should be collected FIRST?", a: "The most volatile data first (order of volatility) - e.g., CPU registers/cache and RAM before disk and archived data." }
+];
+
+let currentCard = 0;
+const cardFront = document.getElementById('cardFront');
+const cardBack = document.getElementById('cardBack');
+const cardNum = document.getElementById('cardNum');
+const flashcardEl = document.getElementById('flashcard');
+
+function renderCard() {
+  flashcardEl.classList.remove('flipped');
+  cardFront.textContent = flashcards[currentCard].q;
+  cardBack.textContent = flashcards[currentCard].a;
+  cardNum.textContent = currentCard + 1;
+}
+flashcardEl.addEventListener('click', () => flashcardEl.classList.toggle('flipped'));
+document.getElementById('nextCard').addEventListener('click', () => {
+  currentCard = (currentCard + 1) % flashcards.length;
+  renderCard();
+});
+document.getElementById('prevCard').addEventListener('click', () => {
+  currentCard = (currentCard - 1 + flashcards.length) % flashcards.length;
+  renderCard();
+});
+document.addEventListener('keydown', (e) => {
+  if (!document.getElementById('flashcards').classList.contains('active')) return;
+  if (e.key === 'ArrowRight') document.getElementById('nextCard').click();
+  if (e.key === 'ArrowLeft') document.getElementById('prevCard').click();
+  if (e.key === ' ') { e.preventDefault(); flashcardEl.classList.toggle('flipped'); }
+});
+renderCard();
+
+const mcqs = [
+  { q: "An organization defines a known-good, locked-down configuration and pushes it to all new laptops. This is BEST described as:",
+    options: ["Penetration testing", "Establishing and deploying a secure baseline", "Threat hunting", "Tokenization"], correct: 1,
+    exp: "Defining a secure config and deploying it to systems is the establish/deploy phase of secure baselines." },
+  { q: "Employees use their personal phones for work email under company policy. This deployment model is:",
+    options: ["COPE", "CYOD", "BYOD", "MDM"], correct: 2,
+    exp: "Bring Your Own Device (BYOD) = employee-owned devices used for work." },
+  { q: "Which wireless standard uses SAE to protect against offline dictionary attacks?",
+    options: ["WEP", "WPA", "WPA2-PSK", "WPA3"], correct: 3,
+    exp: "WPA3 introduced SAE (Simultaneous Authentication of Equals), replacing the WPA2 4-way handshake." },
+  { q: "A developer scans application SOURCE CODE for flaws without executing it. This is:",
+    options: ["DAST", "SAST", "Fuzzing", "Pen testing"], correct: 1,
+    exp: "Static Application Security Testing (SAST) analyzes source code without running the program." },
+  { q: "A suspicious executable is run inside an isolated environment to observe its behavior. This is:",
+    options: ["Quarantine", "Sandboxing", "Segmentation", "Hardening"], correct: 1,
+    exp: "Sandboxing isolates untrusted code so it cannot harm production systems - common in malware analysis." },
+  { q: "A company shreds and degausses old hard drives, then files paperwork proving it. The paperwork is a:",
+    options: ["Data retention policy", "Certificate of destruction", "Chain of custody", "Legal hold"], correct: 1,
+    exp: "A certificate of destruction documents that media was properly destroyed - needed for compliance/audit." },
+  { q: "Securely erasing a drive so it can be REUSED is BEST called:",
+    options: ["Destruction", "Sanitization", "Decommissioning", "Archiving"], correct: 1,
+    exp: "Sanitization (crypto-erase/overwrite) removes data while keeping the media usable." },
+  { q: "A scanner reports a vulnerability that, on inspection, does not actually exist. This is a:",
+    options: ["False negative", "True positive", "False positive", "True negative"], correct: 2,
+    exp: "A false positive is an alert for something that is not actually a real issue." },
+  { q: "Which is MORE dangerous from a security standpoint?",
+    options: ["False positive", "False negative", "True positive", "True negative"], correct: 1,
+    exp: "A false negative means a real vulnerability/attack went undetected - leaving you exposed without knowing." },
+  { q: "A team needs the standardized SEVERITY score (0-10) of a vulnerability. They use:",
+    options: ["CVE", "CVSS", "CPE", "OSINT"], correct: 1,
+    exp: "CVSS provides the numeric severity score; CVE is just the identifier." },
+  { q: "Management formally signs off to NOT patch a legacy system and accept the risk for now. This is an:",
+    options: ["Exception/exemption", "Remediation", "Compensating control", "False positive"], correct: 0,
+    exp: "A documented decision to accept and not remediate a risk is an exception/exemption." },
+  { q: "After patching, a team runs the scanner again to confirm the finding is gone. This is:",
+    options: ["Alert tuning", "Validation via rescanning", "Threat hunting", "Enumeration"], correct: 1,
+    exp: "Rescanning (plus audit/verification) validates that remediation succeeded." },
+  { q: "Which tool aggregates logs from many systems, correlates them, and raises alerts?",
+    options: ["Antivirus", "SIEM", "NetFlow", "WAF"], correct: 1,
+    exp: "A SIEM centralizes log collection, correlation, and alerting." },
+  { q: "Analysts are overwhelmed by noisy, low-value alerts. The BEST fix is:",
+    options: ["Disable the SIEM", "Alert tuning", "Add more analysts only", "Turn off logging"], correct: 1,
+    exp: "Alert tuning adjusts rules/thresholds to cut false positives and surface meaningful alerts." },
+  { q: "Which provides only network flow METADATA (IPs, ports, bytes), not full packet content?",
+    options: ["Packet capture (pcap)", "NetFlow", "SIEM", "FIM"], correct: 1,
+    exp: "NetFlow records flow metadata; full content requires packet capture (Wireshark/tcpdump)." },
+  { q: "Which set of email controls authenticates senders and defines failure handling?",
+    options: ["TLS, SSL, SSH", "SPF, DKIM, DMARC", "POP, IMAP, SMTP", "AH, ESP, IKE"], correct: 1,
+    exp: "SPF authorizes senders, DKIM signs messages, DMARC sets policy + reporting on failures." },
+  { q: "A control alerts whenever critical system files are altered unexpectedly. This is:",
+    options: ["DLP", "FIM", "NAC", "EDR"], correct: 1,
+    exp: "File Integrity Monitoring (FIM) detects unauthorized changes to files/configs." },
+  { q: "Before a laptop joins the network, its patch level and AV status are checked. This is:",
+    options: ["EDR", "NAC", "DLP", "SIEM"], correct: 1,
+    exp: "Network Access Control (NAC) posture-checks devices before granting access." },
+  { q: "Which solution correlates threats across endpoints, email, network, AND cloud?",
+    options: ["EDR", "XDR", "Antivirus", "HIDS"], correct: 1,
+    exp: "XDR (eXtended Detection and Response) extends EDR across multiple security layers." },
+  { q: "Which Linux feature enforces Mandatory Access Control that users cannot override?",
+    options: ["sudo", "SELinux", "iptables", "cron"], correct: 1,
+    exp: "SELinux enforces MAC policies on Linux systems." },
+  { q: "A tool prevents employees from emailing files containing credit card numbers externally. This is:",
+    options: ["FIM", "DLP", "NAC", "SPF"], correct: 1,
+    exp: "Data Loss Prevention (DLP) inspects and blocks unauthorized exfiltration of sensitive data." },
+  { q: "Which IAM concept lets a user log into many different services with ONE set of credentials?",
+    options: ["MFA", "SSO", "PAM", "RBAC"], correct: 1,
+    exp: "Single Sign-On (SSO) allows one authentication to access multiple applications." },
+  { q: "A web app redirects users to an external identity provider to log in and trusts the returned assertion. This is MOST likely:",
+    options: ["SAML federation", "Kerberos local auth", "DAC", "FIM"], correct: 0,
+    exp: "SAML is an XML-based standard widely used for federated web SSO via an identity provider." },
+  { q: "Permissions are assigned to job ROLES, and users inherit them by being placed in a role. This is:",
+    options: ["MAC", "DAC", "RBAC", "ABAC"], correct: 2,
+    exp: "Role-Based Access Control assigns permissions to roles; users get permissions via their role." },
+  { q: "Access decisions evaluate user department, resource sensitivity, time, and location together. This is:",
+    options: ["DAC", "ABAC", "RBAC", "MAC"], correct: 1,
+    exp: "Attribute-Based Access Control (ABAC) evaluates multiple attributes for fine-grained, dynamic decisions." },
+  { q: "A login requires a password AND a code from a hardware token. These represent which factors?",
+    options: ["Two 'something you know'", "Something you know + something you have", "Something you are + somewhere you are", "Two 'something you have'"], correct: 1,
+    exp: "Password = know; hardware token = have. Two different factor types = true MFA." },
+  { q: "Which password practice provides the GREATEST resistance to brute force?",
+    options: ["Frequent expiration", "Increased length", "Forcing symbols only", "Disabling managers"], correct: 1,
+    exp: "Length is the most impactful factor; modern guidance (NIST) favors long passphrases over forced complexity/rotation." },
+  { q: "Admins receive elevated rights only for a 30-minute window when performing a task. This is:",
+    options: ["Standing privilege", "Just-in-time (JIT) access", "DAC", "Federation"], correct: 1,
+    exp: "JIT access grants privileges only when needed and for a limited time - core PAM practice." },
+  { q: "Which BEST describes ephemeral credentials?",
+    options: [
+      "Permanent shared admin passwords",
+      "Short-lived credentials that automatically expire",
+      "Biometric templates",
+      "Hardcoded API keys in source"
+    ], correct: 1,
+    exp: "Ephemeral credentials are temporary and auto-expire, minimizing exposure if compromised." },
+  { q: "Automating repetitive provisioning so a small team handles far more work is described as a:",
+    options: ["Single point of failure", "Workforce multiplier", "Technical debt", "Guard rail"], correct: 1,
+    exp: "Automation acts as a workforce multiplier, increasing what a limited team can accomplish." },
+  { q: "Which is a RISK of heavy automation/orchestration?",
+    options: ["Faster reaction time", "Enforced baselines", "Single point of failure / technical debt", "Secure scaling"], correct: 2,
+    exp: "Over-reliance can create a single point of failure and accrue technical debt that's hard to support." },
+  { q: "Which is the CORRECT order of the incident response process?",
+    options: [
+      "Detection → Preparation → Recovery → Analysis → Containment → Eradication → Lessons Learned",
+      "Preparation → Detection → Analysis → Containment → Eradication → Recovery → Lessons Learned",
+      "Preparation → Containment → Detection → Recovery → Analysis → Eradication → Lessons Learned",
+      "Analysis → Detection → Preparation → Containment → Recovery → Eradication → Lessons Learned"
+    ], correct: 1,
+    exp: "The SY0-701 order: Preparation, Detection, Analysis, Containment, Eradication, Recovery, Lessons Learned." },
+  { q: "During a ransomware incident, the team disconnects infected hosts from the network. This step is:",
+    options: ["Eradication", "Containment", "Recovery", "Preparation"], correct: 1,
+    exp: "Isolating affected systems to stop spread is containment." },
+  { q: "Removing the malware and disabling the attacker's accounts is which IR step?",
+    options: ["Containment", "Eradication", "Recovery", "Detection"], correct: 1,
+    exp: "Eradication removes the threat itself (malware, malicious accounts, artifacts)." },
+  { q: "Documenting exactly who handled a seized drive, when, and how, is:",
+    options: ["Legal hold", "Chain of custody", "E-discovery", "Order of volatility"], correct: 1,
+    exp: "Chain of custody preserves evidence integrity and admissibility by tracking all handling." },
+  { q: "A company is told to preserve all emails relevant to a lawsuit, overriding normal deletion. This is a:",
+    options: ["Legal hold", "Data retention purge", "Chain of custody", "Quarantine"], correct: 0,
+    exp: "A legal hold suspends normal deletion to preserve potentially relevant data for litigation." },
+  { q: "In forensic acquisition, which should be collected FIRST per the order of volatility?",
+    options: ["Backup tapes", "Hard disk files", "RAM / CPU cache", "Archived logs"], correct: 2,
+    exp: "Most volatile data (registers, cache, RAM) is captured first because it's lost on power-off." },
+  { q: "Proactively searching the environment for threats that evaded existing tools is:",
+    options: ["Penetration testing", "Threat hunting", "Vulnerability scanning", "Alert tuning"], correct: 1,
+    exp: "Threat hunting is the proactive search for undetected adversaries already in the environment." },
+  { q: "Which data source provides FULL packet content for deep investigation?",
+    options: ["NetFlow", "Packet capture (pcap)", "SNMP traps", "Dashboards"], correct: 1,
+    exp: "Packet captures (Wireshark/tcpdump) record full content; NetFlow only records flow metadata." },
+  { q: "Which log would BEST show that a specific external IP was repeatedly blocked at the perimeter?",
+    options: ["Application log", "Firewall log", "DNS cache", "Password vault log"], correct: 1,
+    exp: "Firewall logs record allowed/blocked connections, including source IPs at the perimeter." }
+];
+
+let score = 0, answered = 0;
+const mcqContainer = document.getElementById('mcqContainer');
+const scoreEl = document.getElementById('score');
+const answeredEl = document.getElementById('answered');
+
+function renderMcqs() {
+  mcqContainer.innerHTML = '';
+  score = 0; answered = 0;
+  scoreEl.textContent = score;
+  answeredEl.textContent = answered;
+  mcqs.forEach((m, idx) => {
+    const div = document.createElement('div');
+    div.className = 'mcq';
+    div.dataset.idx = idx;
+    let html = `<div class="mcq-question">${idx + 1}. ${m.q}</div><ul class="mcq-options">`;
+    m.options.forEach((opt, i) => {
+      html += `<li data-i="${i}">${String.fromCharCode(65 + i)}. ${opt}</li>`;
+    });
+    html += `</ul><div class="mcq-explanation"><b>Explanation:</b> ${m.exp}</div>`;
+    div.innerHTML = html;
+    mcqContainer.appendChild(div);
+
+    div.querySelectorAll('.mcq-options li').forEach(li => {
+      li.addEventListener('click', () => {
+        if (div.classList.contains('answered')) return;
+        const chosen = parseInt(li.dataset.i, 10);
+        const correctIdx = m.correct;
+        div.querySelectorAll('.mcq-options li').forEach((node, i) => {
+          if (i === correctIdx) node.classList.add('correct');
+          else if (i === chosen) node.classList.add('wrong');
+        });
+        if (chosen === correctIdx) score++;
+        answered++;
+        scoreEl.textContent = score;
+        answeredEl.textContent = answered;
+        div.classList.add('answered');
+      });
+    });
+  });
+}
+document.getElementById('resetMcq').addEventListener('click', renderMcqs);
+renderMcqs();
+</script>
+</body>
+</html>
